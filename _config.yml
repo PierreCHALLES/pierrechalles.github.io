@@ -1,17 +1,20 @@
 # Site settings
-title: A blog about lorem ipsum dolor sit amet
-description: A blog about lorem ipsum dolor sit amet
+title: Portfolio | Pierre CHALLES
+description: Portfolio | Pierre CHALLES
 # baseurl: "/particle" # the subpath of your site, e.g. /blog
 # url: "localhost:3000" # the base hostname & protocol for your site e.g. http://willianjusten.com.br
 
 # User settings
-username: Anon Developer
-user_description: Bicycle rights irony actually neutra typewriter lyft. Man bun taxidermy put a bird on it, umami yr ramps pop-up ugh bushwick chia lo-fi. Occupy bitters pour-over snackwave you probably haven't heard of them small batch. Cornhole mustache man bun letterpress echo park VHS.
+username: Pierre CHALLES
+user_description: Hello, moi c'est Pierre CHALLES👋
+
+Je suis actuellement étudiant au Centre de Formation 3iFA d'Alencon mais délocalisé à l'Aigle 🗺️ en première année de BTS SIO (Services Informatiques aux Organisations) dans l'option SLAM (Solutions Logicielles et Application Métier) qui en gros est une option spécialisée pour le développement 💻
+
+Actuellement toujours en cours d'étude 🎓, je vous propose sur ce portfolio de retrouver ci-dessous les différentes études, et projet professionnel que j'ai pu entreprendre au sein de ma carrière.
+
+Vous retrouverez ci-dessous mon CV ainsi que mes différents projets 👩‍💻
 user_title: Software Developer
-email: anon@anon.com
-twitter_username: lorem_ipsum
-github_username:  lorem_ipsum
-gplus_username:  lorem_ipsum
+email: pch@mtb111.fr
 
 # Google-analytics
 google-analytics:
