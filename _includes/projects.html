@@ -93,7 +93,15 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
         labels: ['Bac STMG', 'Service Civique', 'Titre Pro VCM', 'Travail dans plusieurs entreprise', 'Travail en intérim', 'BTS SIO'], // Remplacez par les noms des postes
         datasets: [{
           label: 'Période',
-          data: [1, 1, 4, 5, 5, 6], // Durée de chaque poste en années
+         data: [
+  {x: 2018, y: 0}, // Poste 1 de 2018 à 2019 (2 ans)
+  {x: 2019, y: 0}, // Poste 2 de 2019 à 2021 (3 ans)
+  {x: 2022, y: 1}, // Poste 3 de 2020 à 2021 (1 an)
+  {x: 2023, y: 4}  // Poste 4 de 2021 à 2025 (4 ans)
+  {x: 2023, y: 5}  // Poste 4 de 2021 à 2025 (4 ans)
+  {x: 2025, y: 5}  // Poste 4 de 2021 à 2025 (4 ans)
+]
+
           backgroundColor: [
             'rgba(75, 192, 192, 0.2)',
             'rgba(54, 162, 235, 0.2)',
