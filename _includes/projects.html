@@ -38,11 +38,68 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
 
 <div class="user-details" id="career">
   <h1>Mon Parcours</h1>
+  
 </div>
-<div class="user-career">
-  <h3>Comment en suis-je arrivé là ?</h3>
-  <p> Description de votre parcours professionnel, les postes occupés, les entreprises, les responsabilités, etc.</p>
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .chart-container {
+      width: 50%;
+      margin: 0 auto;
+      height: 400px;
+    }
+  </style>
+  <div class="user-career">
+    <h3>Comment en suis-je arrivé là ?</h3>
+    <p> Description de votre parcours professionnel, les postes occupés, les entreprises, les responsabilités, etc.</p>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="careerChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('careerChart').getContext('2d');
+    const careerChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Poste 1', 'Poste 2', 'Poste 3', 'Poste 4'], // Remplacez par les noms des postes
+        datasets: [{
+          label: 'Années d\'expérience',
+          data: [2, 3, 1, 4], // Remplacez par les années d'expérience correspondantes
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
+          ],
+          borderColor: [
+            'rgba(75, 192, 192, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(153, 102, 255, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y', // Pour faire un graphique à barres horizontales
+        scales: {
+          x: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: 'Parcours Professionnel'
+          }
+        }
+      }
+    });
+  </script>
 
 <div class="user-details" id="tech-watch">
   <h1> Veille Technologique </h1>
