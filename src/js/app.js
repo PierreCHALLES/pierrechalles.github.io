@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "detect_on": "canvas",
       "events": {
         "onhover": {
-          "enable": true,
+          "enable": false,
           "mode": "grab"
         },
         "onclick": {
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "duration": 0.4
         },
         "push": {
-          "particles_nb": 4
+          "particles_nb": 100
         },
         "remove": {
           "particles_nb": 2
