@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "duration": 0.4
         },
         "push": {
-          "particles_nb": 100
+          "particles_nb": 4
         },
         "remove": {
           "particles_nb": 2
