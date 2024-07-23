@@ -90,10 +90,10 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
     const careerChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Poste 1', 'Poste 2', 'Poste 3', 'Poste 4'], // Remplacez par les noms des postes
+        labels: ['Bac STMG', 'Service Civique', 'Titre Pro VCM', 'Travail dans plusieurs entreprise', 'Travail en intérim', 'BTS SIO'], // Remplacez par les noms des postes
         datasets: [{
           label: 'Période',
-          data: [2, 3, 1, 4], // Durée de chaque poste en années
+          data: [1, 1, 4, 5, 5, 6], // Durée de chaque poste en années
           backgroundColor: [
             'rgba(75, 192, 192, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -116,9 +116,11 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
         indexAxis: 'y', // Pour un graphique à barres horizontales
         scales: {
           x: {
-            beginAtZero: true,
+            beginAtZero: false,
             type: 'linear',
             position: 'top',
+             min: 2018, // Année de début
+            max: 2024, // Année de fin
             ticks: {
               stepSize: 1
             },
