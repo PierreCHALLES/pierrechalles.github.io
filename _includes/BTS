@@ -1,0 +1,46 @@
+  <section id="about" class="facts">
+      <div class="container">
+
+        <div class="section-title" >
+          <h2>Qu'est ce que le <b >BTS SIO 🎓</b> ?</h2>
+		  <p>Avant de commencer à parler de moi, je vous propose de présenter en premier lieu ma filière dont je suis affecté</p>
+		  <br>
+          <p>Le Brevet de Technicien Supérieur aux Services Informatiques aux Organisations (<b class="neon2">BTS SIO</b>), s'adresse à ceux qui souhaitent se former en deux ans aux métiers d'administrateur réseau ou de développeur. Pour par la suite intégré directement le marché du travail ou continuer des études, dans le domaine de l'informatique.</p>
+		<br><h4>Le BTS SIO propose deux spécialités :</h4><br>
+		<div class="row justify-content-around spec_bts">
+
+                <div class="col-xl-5 bts_sisr" data-aos="fade-left">
+                    <h4><i class="icofont-network"></i> Option <b>SISR</b> </h4>
+                    <h6> L’option Solution d’infrastructure, systèmes et réseaux forme des professionnels des réseaux et équipements informatiques (installation, maintenance, sécurité). En sortant d’un <b>BTS SIO</b> <b>SISR</b>, vous serez capables de gérer et d’administrer le réseau d’une société et d’assurer sa sécurité et sa maintenance. </h6>
+                    <h6> Les techniciens supérieurs en informatique option <b>SISR</b>, peuvent accéder aux métiers de :
+                        <ul>
+                             <br><i class="icofont-rounded-right"></i>Administrateur systèmes et réseaux <br>
+                             <i class="icofont-rounded-right"></i>Informaticien support et déploiement <br>
+                             <i class="icofont-rounded-right"></i>Pilote d’exploitation <br>
+                             <i class="icofont-rounded-right"></i>Support systèmes et réseaux <br>
+                             <i class="icofont-rounded-right"></i>Technicien d’infrastructure <br>
+                             <i class="icofont-rounded-right"></i>Technicien de production <br>
+                             <i class="icofont-rounded-right"></i>Technicien micro et réseaux 
+                        </ul>
+                    </h6>
+  </div>
+                <div class="col-xl-5 bts_slam" data-aos="fade-right">
+                    <h4><i class="icofont-code"></i> Option <b>SLAM</b> </h4> <b class="neon2"><div class="feure"> 👈 <i> (la fillière que j'ai choisis )</i> </div>  </b>
+                    <h6> L’option Solutions logicielles et applications métiers forme des spécialistes des logiciels (rédaction d’un cahier des charges, formulation des besoins et spécifications, développement, intégration au sein de la société). </h6>
+                    <h6> Les techniciens supérieurs en informatique option <b>SLAM</b>, sont préparés aux métiers de :
+                        <ul>
+                             <br><i class="icofont-rounded-right"></i>Développeur d’applications informatiques <br>
+                             <i class="icofont-rounded-right"></i>Développeur informatique <br>
+                             <i class="icofont-rounded-right"></i>Analyste d’applications ou d’études<br> 
+                             <i class="icofont-rounded-right"></i>Analyste programmeur <br>
+                             <i class="icofont-rounded-right"></i>Programmeur analyste <br>
+                             <i class="icofont-rounded-right"></i>Programmeur d’applications<br>
+                             <i class="icofont-rounded-right"></i>Responsable des services applicatifs <br>
+                             <i class="icofont-rounded-right"></i>Technicien d’études informatiques 
+                        </ul>
+                    </h6>
+                </div>
+            </div>
+		</div>
+      </div>
+    </section><!-- Fin BTS Section -->
