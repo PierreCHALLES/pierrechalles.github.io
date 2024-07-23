@@ -57,6 +57,34 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
     <canvas id="careerChart"></canvas>
   </div>
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parcours Professionnel</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .chart-container {
+      width: 80%;
+      margin: 0 auto;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="user-details" id="career">
+    <h1>Mon Parcours</h1>
+  </div>
+  <div class="user-career">
+    <h3>Comment en suis-je arrivé là ?</h3>
+    <p> Description de votre parcours professionnel, les postes occupés, les entreprises, les responsabilités, etc.</p>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="careerChart"></canvas>
+  </div>
+
   <script>
     const ctx = document.getElementById('careerChart').getContext('2d');
     const careerChart = new Chart(ctx, {
@@ -64,8 +92,8 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
       data: {
         labels: ['Poste 1', 'Poste 2', 'Poste 3', 'Poste 4'], // Remplacez par les noms des postes
         datasets: [{
-          label: 'Années d\'expérience',
-          data: [2, 3, 1, 4], // Remplacez par les années d'expérience correspondantes
+          label: 'Période',
+          data: [2, 3, 1, 4], // Durée de chaque poste en années
           backgroundColor: [
             'rgba(75, 192, 192, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -78,14 +106,32 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
             'rgba(255, 206, 86, 1)',
             'rgba(153, 102, 255, 1)'
           ],
-          borderWidth: 1
+          borderWidth: 1,
+          barThickness: 20, // Épaisseur des barres
+          maxBarThickness: 20,
+          minBarLength: 2
         }]
       },
       options: {
-        indexAxis: 'y', // Pour faire un graphique à barres horizontales
+        indexAxis: 'y', // Pour un graphique à barres horizontales
         scales: {
           x: {
-            beginAtZero: true
+            beginAtZero: true,
+            type: 'linear',
+            position: 'top',
+            ticks: {
+              stepSize: 1
+            },
+            title: {
+              display: true,
+              text: 'Années'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Postes'
+            }
           }
         },
         plugins: {
@@ -95,11 +141,20 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
           title: {
             display: true,
             text: 'Parcours Professionnel'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.dataset.label + ': ' + context.raw + ' ans';
+              }
+            }
           }
         }
       }
     });
   </script>
+</body>
+</html>
 
 <div class="user-details" id="tech-watch">
   <h1> Veille Technologique </h1>
