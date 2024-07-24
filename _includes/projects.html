@@ -184,7 +184,7 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
           callbacks: {
             label: function(context) {
               console.log(context)
-              return context.dataset.label + ': ' + context.dataset.data[context.dataIndex].y + ' ans';
+              return context.dataset.label + ': ' + context.dataset.data[context.dataIndex+1].y + ' ans';
             }
           }
         }
