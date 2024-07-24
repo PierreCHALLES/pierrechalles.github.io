@@ -31,7 +31,7 @@
             background: #0056b3;
         }
     </style>
-   <form id="c" onsubmit="submitForm(event)">
+   <form class="contact-form" onsubmit="submitForm(event)">
         <h2>Contactez-nous</h2> 
         <label for="subject">Sujet :</label>
         <input type="text" id="subject" name="subject" required>
@@ -43,5 +43,5 @@
     </form>
 
 <script>
- function submitForm(event) { event.preventDefault(); var subject = document.getElementById('subject').value; var body = document.getElementById('message').value; subject = encodeURIComponent(subject); body = encodeURIComponent(body); var mailtoLink = 'pch@mtb111.fr?subject=' + subject + '&body=' + body; window.location.href = mailtoLink; } 
+ function submitForm(event) { event.preventDefault(); var subject = document.getElementById('subject').value; var body = document.getElementById('message').value; subject = encodeURIComponent(subject); body = encodeURIComponent(body); var mailtoLink = 'mailto:pch@mtb111.fr?subject=' + subject + '&body=' + body; window.location.href = mailtoLink; } 
 </script>
