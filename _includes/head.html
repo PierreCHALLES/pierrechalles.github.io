@@ -7,7 +7,38 @@
   <meta name="description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
   <link rel="stylesheet" href="{{ "/assets/css/main.css" | prepend: site.baseurl }}">
-  <link ref="stylesheet" href="/assets/css/style.css">
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+    
+    #game-area {
+        position: relative;
+        width: 100%;
+        height: 80vh;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin: 20px auto;
+        overflow: hidden;
+    }
+    
+    #square {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        position: absolute;
+        display: none;
+    }
+    
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+  </style>
 
   <link ref="icon" href="/assets/img/favicon.ico">
 </head>
