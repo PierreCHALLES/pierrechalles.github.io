@@ -183,7 +183,7 @@ Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.</
         tooltip: {
           callbacks: {
             label: function(context) {
-              return context.dataset.label + ': ' + context.raw + ' ans';
+              return context.dataset.label + ': ' + context.data[0].y + ' ans';
             }
           }
         }
