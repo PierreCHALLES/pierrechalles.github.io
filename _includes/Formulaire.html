@@ -31,19 +31,17 @@
             background: #0056b3;
         }
     </style>
-   <form class="contact-form" action="submit_form.php" method="POST">
-        <h2>Contactez-nous</h2>
-        <label for="name">Nom :</label>
-        <input type="text" id="name" name="name" required>
-        
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required>
-        
+   <form class="contact-form" onsubmit="submitForm(event)">
+        <h2>Contactez-nous</h2> 
         <label for="subject">Sujet :</label>
         <input type="text" id="subject" name="subject" required>
         
         <label for="message">Message :</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
+        <textarea id="message" name="body" rows="5" required></textarea>
         
         <button type="submit">Envoyer</button>
     </form>
+
+<script>
+ function submitForm(event) { event.preventDefault(); var subject = document.getElementById('contact_form_name').value; var body = document.getElementById('contact_form_message').value; subject = encodeURIComponent(subject); body = encodeURIComponent(body); var mailtoLink = 'pch@mtb111.fr?subject=' + subject + '&body=' + body; window.location.href = mailtoLink; } 
+</script>
