@@ -23,7 +23,6 @@
         .user-projects {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             margin-bottom: 40px;
         }
 
@@ -34,25 +33,19 @@
             margin: 0 20px;
         }
 
-        .user-projects .contents, 
-        .user-projects .contents-right {
+        .user-projects .contents {
             flex: 1;
             text-align: justify;
             margin: 0 20px;
         }
 
-        .user-projects .images-left {
-            order: 1;
+        /* Spécifique à chaque section */
+        .user-projects.right {
+            flex-direction: row-reverse;
         }
 
-        .user-projects .contents-right {
-            order: 2;
-        }
-
-        .chart-container {
-            width: 80%;
-            margin: 0 auto;
-            height: 400px;
+        .user-projects.left {
+            flex-direction: row;
         }
     </style>
 </head>
@@ -62,7 +55,8 @@
             <h1>Mon Parcours</h1>
         </div>
 
-        <div class="user-projects">
+        <!-- Première section: Image à droite -->
+        <div class="user-projects right">
             <div class="images-right">
                 <img alt="Diplôme Bac STMG" src="{{ "/assets/img/Diplome STMG.png" | prepend: site.baseurl }}" />
             </div>
@@ -76,11 +70,12 @@
             </div>
         </div>
 
-        <div class="user-projects">
+        <!-- Deuxième section: Image à gauche -->
+        <div class="user-projects left">
             <div class="images-left">
                 <img alt="Titre Pro VCM" src="{{ "/assets/img/Diplome VCM.png" | prepend: site.baseurl }}" />
             </div>
-            <div class="contents-right">
+            <div class="contents">
                 <h3>Formation et Expériences Professionnelles</h3>
                 <ul>
                     <li>Titre Pro VCM</li>
@@ -91,7 +86,8 @@
             </div>
         </div>
 
-        <div class="user-projects">
+        <!-- Troisième section: Image à droite -->
+        <div class="user-projects right">
             <div class="images-right">
                 <img alt="BTS SIO" src="{{ "/assets/img/Chargement.gif" | prepend: site.baseurl }}"/>
             </div>
