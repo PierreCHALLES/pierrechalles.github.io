@@ -1,19 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   {% include head.html %}
   <body>
       {% include header.html %}
+      
       <section id="about">
         {% include about.html %}
       </section>
-      <section id="projects">
-        {% include projects.html %}
-        <!-- {% include Game.html %} -->
+
+      <!-- Section Parcours -->
+      <section id="career">
+        {% include career.html %}
       </section>
+      
+      <!-- Section Veille Technologique -->
+      <section id="tech-watch">
+        {% include tech-watch.html %}
+      </section>
+
+      <!-- Section Épreuve E4 -->
+      <section id="e4">
+        {% include e4.html %}
+      </section>
+      
+      <!-- Formulaire -->
       <section id="Formulaire">
-      {% include Formulaire.html %}
-       </section>
-        {{ content }}
+        {% include Formulaire.html %}
+      </section>
+
+      {{ content }}
+
       {% include footer.html %}
-  
+  </body>
+</html>
+
   </body>
