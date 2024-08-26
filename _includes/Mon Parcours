@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Parcours</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-details" id="career">
+        <h1>Mon Parcours</h1>
+    </div>
+    <div class="user-projects">
+        <div class="images-right">
+            <img alt="Diplôme Bac STMG" src="{{ "/assets/img/Diplome STMG.png" | prepend: site.baseurl }}" />
+        </div>
+        <div class="contents">
+            <h3>Études et Service Civique</h3>
+            <ul>
+                <li>Bac STMG</li>
+                <li>Service Civique</li>
+            </ul>
+            <p>Mon parcours commence avec l'obtention du Bac STMG, suivi d'une année en service civique. Ces expériences m'ont permis de développer des compétences en gestion et en service à la communauté.</p>
+        </div>
+    </div>
+    <div class="user-projects">
+        <div class="images-left">
+            <img alt="Titre Pro VCM" src="{{ "/assets/img/Diplome VCM.png" | prepend: site.baseurl }}" />
+        </div>
+        <div class="contents-right">
+            <h3>Formation et Expériences Professionnelles</h3>
+            <ul>
+                <li>Titre Pro VCM</li>
+                <li>Travail dans plusieurs entreprises</li>
+                <li>Travail en intérim</li>
+            </ul>
+            <p>Après mon service civique, j'ai obtenu un Titre Professionnel en Vente et Conseil en Magasin, ce qui m'a ouvert la voie à diverses expériences professionnelles dans plusieurs entreprises et des missions en intérim.</p>
+        </div>
+    </div>
+    <div class="user-projects">
+        <div class="images-right">
+            <img alt="BTS SIO" src="{{ "/assets/img/Chargement.gif" | prepend: site.baseurl }}"/>
+        </div>
+        <div class="contents">
+            <h3>BTS SIO</h3>
+            <ul>
+                <li>BTS SIO</li>
+            </ul>
+            <p>Actuellement, je poursuis un BTS Services Informatiques aux Organisations (SIO), qui me permet de renforcer mes compétences en informatique et en gestion de projets IT.</p>
+        </div>
+    </div>
+    <div class="chart-container">
+        <canvas id="careerChart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('careerChart').getContext('2d');
+        const careerChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Bac STMG', 'Service Civique', 'Titre Pro VCM', 'Travail dans plusieurs entreprises', 'Travail en intérim', 'BTS SIO'],
+                datasets: [{
+                    label: 'Période',
+                    data: [
+                        {x: 2018, y: 0},
+                        {x: 2019, y: 0},
+                        {x: 2022, y: 1},
+                        {x: 2023, y: 4},
+                        {x: 2023, y: 5},
+                        {x: 2025, y: 5}
+                    ],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1,
+                    barThickness: 20,
+                    maxBarThickness: 20,
+                    minBarLength: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: false,
+                        type: 'linear',
+                        position: 'top',
+                        min: 2018,
+                        max: 2025,
+                        ticks: {
+                            stepSize: 1
+                        },
+                        title: {
+                            display: true,
+                            text: 'Années'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Postes'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Parcours Professionnel'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                console.log(context)
+                                return context.dataset.label + ': ' + context.dataset.data[context.dataIndex+1].y + ' ans';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
