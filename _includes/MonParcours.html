@@ -106,81 +106,94 @@
     </div>
 
     <script>
-        const ctx = document.getElementById('careerChart').getContext('2d');
-        const careerChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Bac STMG', 'Service Civique', 'Titre Pro VCM', 'Travail dans plusieurs entreprises', 'Travail en intérim', 'BTS SIO'],
-                datasets: [{
-                    label: 'Période',
-                    data: [
-                        {x: 2018, y: 0},
-                        {x: 2019, y: 0},
-                        {x: 2022, y: 1},
-                        {x: 2023, y: 4},
-                        {x: 2023, y: 5},
-                        {x: 2025, y: 5}
-                    ],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1,
-                    barThickness: 20,
-                    maxBarThickness: 20,
-                    minBarLength: 2
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        beginAtZero: false,
-                        type: 'linear',
-                        position: 'top',
-                        min: 2018,
-                        max: 2025,
-                        ticks: {
-                            stepSize: 1
-                        },
-                        title: {
-                            display: true,
-                            text: 'Années'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Postes'
-                        }
-                    }
+const ctx = document.getElementById('careerChart').getContext('2d');
+const careerChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Bac STMG', 'Service Civique', 'Titre Pro VCM', 'Travail dans plusieurs entreprises', 'Travail en intérim', 'BTS SIO'],
+        datasets: [{
+            label: 'Période',
+            data: [
+                {x: 2018, y: 0},  // 2018 à 2019 pour Bac STMG
+                {x: 2019, y: 0},  // 2018 à 2019 pour Bac STMG
+                {x: 2020, y: 1},  // 2020 à 2022 pour Service Civique
+                {x: 2022, y: 1},  // 2020 à 2022 pour Service Civique
+                {x: 2021, y: 4},  // 2021 à 2023 pour Titre Pro VCM
+                {x: 2023, y: 4},  // 2023 à 2023 pour Travail dans plusieurs entreprises
+                {x: 2023, y: 5},  // 2023 à 2023 pour Travail en intérim
+                {x: 2023, y: 5},  // 2023 à 2025 pour BTS SIO
+                {x: 2025, y: 5}   // 2023 à 2025 pour BTS SIO
+            ],
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(153, 102, 255, 1)'
+            ],
+            borderWidth: 1,
+            barThickness: 20,
+            maxBarThickness: 20,
+            minBarLength: 2
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        scales: {
+            x: {
+                beginAtZero: false,
+                type: 'linear',
+                position: 'top',
+                min: 2018,
+                max: 2025,
+                ticks: {
+                    stepSize: 1
                 },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    title: {
-                        display: true,
-                        text: 'Parcours Professionnel'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': ' + context.dataset.data[context.dataIndex+1].y + ' ans';
-                            }
-                        }
+                title: {
+                    display: true,
+                    text: 'Années'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Postes'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+            title: {
+                display: true,
+                text: 'Parcours Professionnel'
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.dataset.label + ': ' + context.dataset.data[context.dataIndex+1].y + ' ans';
                     }
                 }
             }
-        });
+        }
+    }
+});
     </script>
 </body>
 </html>
