@@ -5,6 +5,48 @@
     <title>Mon Parcours</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .user-details h1 {
+            text-align: center;
+        }
+
+        .user-projects {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .user-projects .images-right img, 
+        .user-projects .images-left img {
+            width: 200px;
+            height: auto;
+            margin: 0 20px;
+        }
+
+        .user-projects .contents, 
+        .user-projects .contents-right {
+            flex: 1;
+            text-align: justify;
+        }
+
+        .user-projects .images-left {
+            order: 1;
+        }
+
+        .user-projects .contents-right {
+            order: 2;
+        }
+
         .chart-container {
             width: 80%;
             margin: 0 auto;
@@ -13,55 +55,58 @@
     </style>
 </head>
 <body>
-    <div class="user-details" id="career">
-        <h1>Mon Parcours</h1>
+    <div class="container">
+        <div class="user-details" id="career">
+            <h1>Mon Parcours</h1>
+        </div>
+
+        <div class="user-projects">
+            <div class="images-right">
+                <img alt="Diplôme Bac STMG" src="{{ "/assets/img/Diplome STMG.png" | prepend: site.baseurl }}" />
+            </div>
+            <div class="contents">
+                <h3>Études et Service Civique</h3>
+                <ul>
+                    <li>Bac STMG</li>
+                    <li>Service Civique</li>
+                </ul>
+                <p>Mon parcours commence avec l'obtention du Bac STMG, suivi d'une année en service civique. Ces expériences m'ont permis de développer des compétences en gestion et en service à la communauté.</p>
+            </div>
+        </div>
+
+        <div class="user-projects">
+            <div class="images-left">
+                <img alt="Titre Pro VCM" src="{{ "/assets/img/Diplome VCM.png" | prepend: site.baseurl }}" />
+            </div>
+            <div class="contents-right">
+                <h3>Formation et Expériences Professionnelles</h3>
+                <ul>
+                    <li>Titre Pro VCM</li>
+                    <li>Travail dans plusieurs entreprises</li>
+                    <li>Travail en intérim</li>
+                </ul>
+                <p>Après mon service civique, j'ai obtenu un Titre Professionnel en Vente et Conseil en Magasin, ce qui m'a ouvert la voie à diverses expériences professionnelles dans plusieurs entreprises et des missions en intérim.</p>
+            </div>
+        </div>
+
+        <div class="user-projects">
+            <div class="images-right">
+                <img alt="BTS SIO" src="{{ "/assets/img/Chargement.gif" | prepend: site.baseurl }}"/>
+            </div>
+            <div class="contents">
+                <h3>BTS SIO</h3>
+                <ul>
+                    <li>BTS SIO</li>
+                </ul>
+                <p>Actuellement, je poursuis un BTS Services Informatiques aux Organisations (SIO), qui me permet de renforcer mes compétences en informatique et en gestion de projets IT.</p>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="careerChart"></canvas>
+        </div>
     </div>
-    <div class="user-projects">
-        <div class="images-right">
-            <img alt="Diplôme Bac STMG" src="{{ "/assets/img/Diplome STMG.png" | prepend: site.baseurl }}" />
-        </div>
-        <div class="contents">
-            <h3>Études et Service Civique</h3>
-            <ul>
-                <li>Bac STMG</li>
-                <li>Service Civique</li>
-            </ul>
-            <p>Mon parcours commence avec l'obtention du Bac STMG, suivi d'une année en service civique. Ces expériences m'ont permis de développer des compétences en gestion et en service à la communauté.</p>
-        </div>
-    </div>
-    <div class="user-projects">
-        <div class="images-left">
-            <img alt="Titre Pro VCM" src="{{ "/assets/img/Diplome VCM.png" | prepend: site.baseurl }}" />
-        </div>
-        <div class="contents-right">
-            <br>
-        <br>
-            <h3>Formation et Expériences Professionnelles</h3>
-            <ul>
-                <li>Titre Pro VCM</li>
-                <li>Travail dans plusieurs entreprises</li>
-                <li>Travail en intérim</li>
-            </ul>
-            <p>Après mon service civique, j'ai obtenu un Titre Professionnel en Vente et Conseil en Magasin, ce qui m'a ouvert la voie à diverses expériences professionnelles dans plusieurs entreprises et des missions en intérim.</p>
-        </div>
-    </div>
-    <div class="user-projects">
-        <div class="images-right">
-            <img alt="BTS SIO" src="{{ "/assets/img/Chargement.gif" | prepend: site.baseurl }}"/>
-        </div>
-        <div class="contents">
-            <br>
-        <br>
-            <h3>BTS SIO</h3>
-            <ul>
-                <li>BTS SIO</li>
-            </ul>
-            <p>Actuellement, je poursuis un BTS Services Informatiques aux Organisations (SIO), qui me permet de renforcer mes compétences en informatique et en gestion de projets IT.</p>
-        </div>
-    </div>
-    <div class="chart-container">
-        <canvas id="careerChart"></canvas>
-    </div>
+
     <script>
         const ctx = document.getElementById('careerChart').getContext('2d');
         const careerChart = new Chart(ctx, {
@@ -131,7 +176,6 @@
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                console.log(context)
                                 return context.dataset.label + ': ' + context.dataset.data[context.dataIndex+1].y + ' ans';
                             }
                         }
