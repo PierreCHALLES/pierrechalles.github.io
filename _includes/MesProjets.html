@@ -9,38 +9,26 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
         }
+
         .user-projects {
             display: flex;
             align-items: flex-start;
             margin-bottom: 20px;
         }
 
-        /* Left images */
+        /* Images on the left */
         .images-left {
             flex: 1;
-            margin-right: 20px; /* Default margin for most cases */
-        }
-        
-        /* Specific for JumpX */
-        .images-left img {
-            width: 100%; /* Ensure image takes 100% of its container */
-            height: auto;
-        }
-        
-        .images-right img, .images-left img {
-            border: 1px solid #ccc; /* Optional border for clarity */
+            margin-right: 20px; /* Space between image and text */
         }
 
         /* Enlarged images for JumpX */
-        .jumpx-images img {
-            width: 150%; /* Enlarges the image by 50% */
-        }
-        
-        /* Adjust margin between image and text for JumpX */
-        .jumpx-images {
-            margin-right: 20px; /* Approx. 1cm */
+        .images-left img {
+            width: 400px; /* Set a fixed width */
+            height: auto;
         }
 
+        /* General content block */
         .contents, .contents-right {
             flex: 2;
         }
@@ -48,11 +36,12 @@
         h3 {
             margin-top: 0;
         }
-        
+
         ul {
             list-style-type: none;
             padding: 0;
         }
+
     </style>
 </head>
 <body>
@@ -79,7 +68,7 @@
 
     <!-- Projet JumpX -->
     <div class="user-projects">
-        <div class="images-left jumpx-images">
+        <div class="images-left">
             <img alt="JumpX" src="{{ '/assets/img/JumpX.jpg' | prepend: site.baseurl }}" />
             <img alt="JumpX" src="{{ '/assets/img/JumpX2.jpg' | prepend: site.baseurl }}" />
         </div>
