@@ -14,35 +14,45 @@
             align-items: flex-start;
             margin-bottom: 20px;
         }
-        .images-left, .images-right {
+
+        /* Left images */
+        .images-left {
             flex: 1;
-            margin-right: 20px;
+            margin-right: 20px; /* Default margin for most cases */
         }
-        .images-left img, .images-right img {
-            max-width: 100%;
+        
+        /* Specific for JumpX */
+        .images-left img {
+            width: 100%; /* Ensure image takes 100% of its container */
             height: auto;
         }
+        
+        .images-right img, .images-left img {
+            border: 1px solid #ccc; /* Optional border for clarity */
+        }
+
+        /* Enlarged images for JumpX */
+        .jumpx-images img {
+            width: 150%; /* Enlarges the image by 50% */
+        }
+        
+        /* Adjust margin between image and text for JumpX */
+        .jumpx-images {
+            margin-right: 20px; /* Approx. 1cm */
+        }
+
         .contents, .contents-right {
             flex: 2;
         }
+
         h3 {
             margin-top: 0;
         }
+        
         ul {
             list-style-type: none;
             padding: 0;
         }
-
-        /* Specific styling for JumpX images */
-        .images-left img {
-            width: 120%; /* Increase size of the image by 20% */
-        }
-
-        /* Add a 10px (1 cm) margin between images and text for JumpX */
-        .images-left {
-            margin-right: 10px; /* Approx. 1 cm of space */
-        }
-
     </style>
 </head>
 <body>
@@ -69,7 +79,7 @@
 
     <!-- Projet JumpX -->
     <div class="user-projects">
-        <div class="images-left">
+        <div class="images-left jumpx-images">
             <img alt="JumpX" src="{{ '/assets/img/JumpX.jpg' | prepend: site.baseurl }}" />
             <img alt="JumpX" src="{{ '/assets/img/JumpX2.jpg' | prepend: site.baseurl }}" />
         </div>
