@@ -5,41 +5,47 @@
     <title>Mes projets</title>
     <style>
         /* Global styling */
-        body {
+              body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .user-details h1 {
+            text-align: center;
         }
 
         .user-projects {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            align-items: center;
+            margin-bottom: 40px;
         }
 
-        /* Images on the left */
-        .images-left {
+        .user-projects .images-right img, 
+        .user-projects .images-left img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 20px;
+        }
+
+        .user-projects .contents {
             flex: 1;
-            margin-right: 20px; /* Space between image and text */
-
-                   /* Enlarged images for JumpX */
-        .images-right img {
-            flex: 1;
-            margin-left: 20px; /* Space between image and text */
+            text-align: justify;
+            margin: 0 20px;
         }
 
-        }
-        /* General content block */
-        .contents, .contents-right {
-            flex: 2;
-        }
-
-        h3 {
-            margin-top: 0;
+        /* Spécifique à chaque section */
+        .user-projects.right {
+            flex-direction: row-reverse;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
+        .user-projects.left {
+            flex-direction: row;
         }
 
     </style>
