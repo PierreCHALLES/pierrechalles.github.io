@@ -1,26 +1,22 @@
-<div class="user-details">
-  <h1> À propos de moi</h1>
-  <p> {{site.user_description}} </p>
-</div>
-<div class="user">
-  <div class="tech">
+<div class="user" style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="tech" style="flex: 1; text-align: center;">
     <a href="https://fr.linkedin.com/in/pierre-challes-83b969255" target="_blank">
-      <img alt="Linkedin" src="{{ "/assets/img/linkedIn.png" | prepend: site.baseurl }}" style="width: 64px; height: 64px; display: inline-block; vertical-align: middle;" />
+      <img src="{{ '/assets/img/linkedIn.png' | prepend: site.baseurl }}" alt="Linkedin" style="width: 64px; height: 64px; display: block; margin: auto;">
     </a>
-    <p>Accès à mon Linkedin!</p>
+    <p style="margin-top: 10px;">Accès à mon Linkedin!</p>
   </div>
-  <div class="tech">
+  <div class="tech" style="flex: 1; text-align: center;">
     <h2>Code</h2>
-    <i class="devicon-javascript-plain colored"></i>
-    <i class="devicon-react-original-wordmark colored"></i>
-    <i class="devicon-nodejs-plain-wordmark"></i>
-    <p> Java, XML, Json, Js</p>
+    <i class="devicon-javascript-plain colored" style="font-size: 64px;"></i>
+    <i class="devicon-react-original-wordmark colored" style="font-size: 64px;"></i>
+    <i class="devicon-nodejs-plain-wordmark" style="font-size: 64px;"></i>
+    <p style="margin-top: 10px;">Java, XML, Json, Js</p>
   </div>
-  <div class="tech">
+  <div class="tech" style="flex: 1; text-align: center;">
     <h2>CV</h2>
-    <i class="devicon-git-plain"></i>
-    <i class="devicon-gulp-plain colored"></i>
-    <i class="devicon-atom-original-wordmark"></i>
-    <p>Eclipse, Xampp, Github, VirtualBox...</p>
+    <i class="devicon-git-plain" style="font-size: 64px;"></i>
+    <i class="devicon-gulp-plain colored" style="font-size: 64px;"></i>
+    <i class="devicon-atom-original-wordmark" style="font-size: 64px;"></i>
+    <p style="margin-top: 10px;">Eclipse, Xampp, Github, VirtualBox...</p>
   </div>
 </div>
