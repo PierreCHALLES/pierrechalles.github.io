@@ -2,166 +2,242 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <div id="game-area">
-    <title>Portfolio | Jeu Pong</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Plateforme Avancé</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             overflow: hidden;
+            background-color: #87CEEB;
         }
 
         canvas {
+            display: block;
+            margin: 0 auto;
+            background: #222;
             border: 2px solid #fff;
-            background-color: #111;
         }
 
         .back-link {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
+            top: 10px;
+            left: 10px;
             padding: 10px;
-            background-color: #333;
+            background-color: #fff;
+            color: #000;
             border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
         }
 
         .back-link:hover {
-            background-color: #555;
+            background-color: #ddd;
         }
     </style>
 </head>
 <body>
     <a href="index.html" class="back-link">Retour au portfolio</a>
-    <canvas id="pong" width="800" height="500"></canvas>
-    
+    <canvas id="platformer" width="800" height="400"></canvas>
+
     <script>
-        const canvas = document.getElementById("pong");
-        const ctx = canvas.getContext("2d");
+        const canvas = document.getElementById('platformer');
+        const ctx = canvas.getContext('2d');
 
-        // Ball settings
-        const ball = {
-            x: canvas.width / 2,
-            y: canvas.height / 2,
-            radius: 10,
-            speedX: 4,
-            speedY: 4,
-            color: "#fff"
-        };
+        // Dimensions du jeu
+        const gravity = 0.8;
+        const friction = 0.9;
 
-        // Paddle settings
-        const paddleWidth = 10, paddleHeight = 100, paddleSpeed = 8;
-
+        // Joueur
         const player = {
-            x: 0,
-            y: canvas.height / 2 - paddleHeight / 2,
-            width: paddleWidth,
-            height: paddleHeight,
+            x: 50,
+            y: 300,
+            width: 30,
+            height: 30,
             color: "#29b6f6",
+            speedX: 0,
+            speedY: 0,
+            grounded: false,
             score: 0
         };
 
-        const ai = {
-            x: canvas.width - paddleWidth,
-            y: canvas.height / 2 - paddleHeight / 2,
-            width: paddleWidth,
-            height: paddleHeight,
-            color: "#f06292",
-            score: 0
+        // Niveau actuel
+        let currentLevel = 0;
+
+        // Niveaux
+        const levels = [
+            {
+                platforms: [
+                    { x: 0, y: 380, width: 800, height: 20, color: "#444" },
+                    { x: 150, y: 300, width: 120, height: 10, color: "#555" },
+                    { x: 400, y: 250, width: 100, height: 10, color: "#666" },
+                    { x: 600, y: 200, width: 150, height: 10, color: "#777" }
+                ],
+                enemies: [
+                    { x: 300, y: 355, width: 30, height: 30, color: "#ff5555", speed: 2, direction: 1 }
+                ],
+                stars: [
+                    { x: 650, y: 170, width: 20, height: 20, color: "#ffcc00", collected: false }
+                ]
+            },
+            {
+                platforms: [
+                    { x: 0, y: 380, width: 800, height: 20, color: "#444" },
+                    { x: 100, y: 300, width: 120, height: 10, color: "#555" },
+                    { x: 350, y: 250, width: 100, height: 10, color: "#666" },
+                    { x: 500, y: 200, width: 150, height: 10, color: "#777" },
+                    { x: 700, y: 150, width: 100, height: 10, color: "#888" }
+                ],
+                enemies: [
+                    { x: 400, y: 225, width: 30, height: 30, color: "#ff5555", speed: 3, direction: -1 }
+                ],
+                stars: [
+                    { x: 750, y: 120, width: 20, height: 20, color: "#ffcc00", collected: false }
+                ]
+            }
+        ];
+
+        // Contrôles
+        const keys = {
+            right: false,
+            left: false,
+            up: false
         };
 
-        // Draw rectangle
-        function drawRect(x, y, w, h, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, w, h);
-        }
-
-        // Draw circle
-        function drawCircle(x, y, radius, color) {
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.fill();
-        }
-
-        // Draw text
-        function drawText(text, x, y, color) {
-            ctx.fillStyle = color;
-            ctx.font = "30px Arial";
-            ctx.fillText(text, x, y);
-        }
-
-        // Move paddles
-        window.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowUp") player.y = Math.max(player.y - paddleSpeed, 0);
-            if (e.key === "ArrowDown") player.y = Math.min(player.y + paddleSpeed, canvas.height - paddleHeight);
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') keys.right = true;
+            if (e.key === 'ArrowLeft') keys.left = true;
+            if (e.key === 'ArrowUp' && player.grounded) {
+                player.speedY = -15;
+                player.grounded = false;
+            }
         });
 
-        function resetBall() {
-            ball.x = canvas.width / 2;
-            ball.y = canvas.height / 2;
-            ball.speedX *= -1;
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowRight') keys.right = false;
+            if (e.key === 'ArrowLeft') keys.left = false;
+        });
+
+        function detectCollision(rect1, rect2) {
+            return rect1.x < rect2.x + rect2.width &&
+                   rect1.x + rect1.width > rect2.x &&
+                   rect1.y < rect2.y + rect2.height &&
+                   rect1.y + rect1.height > rect2.y;
         }
 
         function update() {
-            // Move ball
-            ball.x += ball.speedX;
-            ball.y += ball.speedY;
+            // Appliquer la gravité
+            player.speedY += gravity;
 
-            // Ball collision with top and bottom walls
-            if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= canvas.height) {
-                ball.speedY *= -1;
+            // Appliquer le frottement
+            if (player.grounded) {
+                player.speedX *= friction;
             }
 
-            // Ball collision with player paddle
-            if (ball.x - ball.radius <= player.x + player.width &&
-                ball.y >= player.y && ball.y <= player.y + player.height) {
-                ball.speedX *= -1;
-            }
+            // Mouvement horizontal
+            if (keys.right) player.speedX = 5;
+            if (keys.left) player.speedX = -5;
 
-            // Ball collision with AI paddle
-            if (ball.x + ball.radius >= ai.x &&
-                ball.y >= ai.y && ball.y <= ai.y + ai.height) {
-                ball.speedX *= -1;
-            }
+            player.x += player.speedX;
+            player.y += player.speedY;
 
-            // Ball out of bounds
-            if (ball.x - ball.radius <= 0) {
-                ai.score++;
-                resetBall();
-            } else if (ball.x + ball.radius >= canvas.width) {
-                player.score++;
-                resetBall();
-            }
+            // Empêcher de sortir des bords
+            if (player.x < 0) player.x = 0;
+            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 
-            // AI paddle movement
-            ai.y += (ball.y - (ai.y + paddleHeight / 2)) * 0.1;
+            // Gérer les collisions avec les plateformes
+            player.grounded = false;
+            levels[currentLevel].platforms.forEach(platform => {
+                if (detectCollision(player, platform)) {
+                    // Collision par le bas (sol)
+                    if (player.speedY > 0 && player.y + player.height <= platform.y + player.speedY) {
+                        player.grounded = true;
+                        player.speedY = 0;
+                        player.y = platform.y - player.height;
+                    }
+                }
+            });
+
+            // Vérifier les collisions avec les étoiles
+            levels[currentLevel].stars.forEach(star => {
+                if (!star.collected && detectCollision(player, star)) {
+                    star.collected = true;
+                    player.score += 1;
+
+                    // Passer au niveau suivant si toutes les étoiles sont collectées
+                    if (levels[currentLevel].stars.every(s => s.collected)) {
+                        currentLevel += 1;
+                        if (currentLevel >= levels.length) {
+                            alert("Bravo ! Vous avez terminé le jeu !");
+                            currentLevel = 0;
+                            player.score = 0;
+                        }
+                        resetPlayer();
+                    }
+                }
+            });
+
+            // Gérer les ennemis
+            levels[currentLevel].enemies.forEach(enemy => {
+                enemy.x += enemy.speed * enemy.direction;
+
+                // Changer de direction si l'ennemi atteint un bord
+                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
+                    enemy.direction *= -1;
+                }
+
+                // Vérifier collision avec le joueur
+                if (detectCollision(player, enemy)) {
+                    alert("Oh non ! Vous avez été touché !");
+                    resetPlayer();
+                }
+            });
+
+            // Si le joueur tombe sous l'écran
+            if (player.y > canvas.height) {
+                alert("Vous êtes tombé !");
+                resetPlayer();
+            }
         }
 
         function draw() {
-            // Clear canvas
-            drawRect(0, 0, canvas.width, canvas.height, "#111");
+            // Effacer le canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw paddles
-            drawRect(player.x, player.y, player.width, player.height, player.color);
-            drawRect(ai.x, ai.y, ai.width, ai.height, ai.color);
+            // Dessiner le joueur
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
 
-            // Draw ball
-            drawCircle(ball.x, ball.y, ball.radius, ball.color);
+            // Dessiner les plateformes
+            levels[currentLevel].platforms.forEach(platform => {
+                ctx.fillStyle = platform.color;
+                ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+            });
 
-            // Draw scores
-            drawText(player.score, canvas.width / 4, 50, "#fff");
-            drawText(ai.score, (3 * canvas.width) / 4, 50, "#fff");
+            // Dessiner les étoiles
+            levels[currentLevel].stars.forEach(star => {
+                if (!star.collected) {
+                    ctx.fillStyle = star.color;
+                    ctx.fillRect(star.x, star.y, star.width, star.height);
+                }
+            });
+
+            // Dessiner les ennemis
+            levels[currentLevel].enemies.forEach(enemy => {
+                ctx.fillStyle = enemy.color;
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            });
+
+            // Afficher le score
+            ctx.fillStyle = "#fff";
+            ctx.font = "20px Arial";
+            ctx.fillText("Score : " + player.score, 10, 30);
+        }
+
+        function resetPlayer() {
+            player.x = 50;
+            player.y = 300;
+            player.speedX = 0;
+            player.speedY = 0;
         }
 
         function gameLoop() {
