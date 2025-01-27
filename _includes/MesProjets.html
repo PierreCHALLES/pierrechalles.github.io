@@ -2,12 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes projets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Projets</title>
     <style>
         /* Global styling */
-              body {
+        body {
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
         }
 
         .container {
@@ -18,71 +21,92 @@
 
         .user-details h1 {
             text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
         }
 
-        .user-projects {
+        .project {
             display: flex;
             align-items: center;
             margin-bottom: 40px;
-            gap: 50px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        .user-projects .images-right img, 
-        .user-projects .images-left img {
-            max-width: 100%;
+        .project img {
+            width: 50%;
             height: auto;
-            margin: 0 20px;
         }
 
-        .user-projects .contents {
+        .project-content {
             flex: 1;
+            padding: 20px;
             text-align: justify;
-            margin: 0 20px;
         }
 
-        /* Spécifique à chaque section */
-        .user-projects.right {
+        .project-content h2 {
+            margin-top: 0;
+            color: #3498db;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+        }
+
+        .btn-container .btn {
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-container .btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Alternate layout for odd/even projects */
+        .project:nth-child(odd) {
             flex-direction: row-reverse;
         }
-
-        .user-projects.left {
-            flex-direction: row;
-        }
-
     </style>
 </head>
 <body>
-    <div class="user-details" id="projects">
-        <h1>Mes Projets</h1>
-    </div>
+    <div class="container">
+        <div class="user-details" id="projects">
+            <h1>Mes Projets</h1>
+        </div>
 
-    <!-- Projet RFTG -->
-    <div class="user-projects">
-        <div class="images-right">
-            <img alt="StructurAll" src="{{ '/assets/img/coming soon.jpg' | prepend: site.baseurl }}" />
-            <img alt="StructurAll" src="{{ '/assets/img/coming soon.jpg' | prepend: site.baseurl }}" />
+        <!-- Projet RFTG - Application Web -->
+        <div class="project">
+            <img src="https://via.placeholder.com/400x300" alt="Application Web">
+            <div class="project-content">
+                <h2>Projet RFTG - Partie Web</h2>
+                <p>
+                    Cette application est destinée à M. Emet Brown et à son équipe pour la gestion des activités liées aux DVD dans le village vacances. Accessible via un navigateur web, elle permet aux employés de gérer efficacement le stock de DVD. Les fonctionnalités incluent l’ajout, la suppression, la mise à jour et la recherche de DVD par titre, genre ou époque.
+                </p>
+                <div class="btn-container">
+                    <a href="rftg-web.html" class="btn">Voir les détails</a>
+                </div>
+            </div>
         </div>
-        <div class="contents">
-            <h3>Projet RFTG</h3>
-            <ul>
-                <li>(Partie Web)</li>
-            </ul>
-            <p>Cette application est destinée à M. Emet Brown et à son équipe pour la gestion des activités liées aux DVD dans le village vacances. Accessible via un navigateur web, elle permet aux employés de gérer efficacement le stock de DVD. Les fonctionnalités incluent l’ajout, la suppression, la mise à jour et la recherche de DVD par titre, genre ou époque. L’application assure également une traçabilité complète des locations, permettant de savoir qui a loué un DVD et à quel moment. Pour protéger les données sensibles, un système d’authentification sécurisée est mis en place.</p>
-        </div>
-    </div>
 
-    <!-- Projet JumpX -->
-    <div class="user-projects">
-                <div class="contents">
-            <h3>>Projet RFTG</h3>
-            <ul>
-                <li>(Partie Mobile)</li>
-            </ul>
-            <p>Cette application mobile est conçue pour les clients du village vacances. Disponible sur Android et sur des bornes de location intégrées (tablettes), elle permet aux utilisateurs de parcourir le catalogue de DVD et de louer les films de leur choix. Les clients ont également la possibilité d’opter pour une livraison à domicile. L’application met un point d’honneur à garantir la sécurité des données personnelles grâce à des systèmes adaptés. Responsive et facile d’utilisation, elle offre une expérience fluide aux utilisateurs sur tous les supports.</p>
-        </div>
-        <div class="images-right">
-            <img alt="JumpX" src="{{ '/assets/img/coming soon.jpg' | prepend: site.baseurl }}" />
-            <img alt="JumpX" src="{{ '/assets/img/coming soon.jpg' | prepend: site.baseurl }}" />
+        <!-- Projet RFTG - Application Mobile -->
+        <div class="project">
+            <img src="https://via.placeholder.com/400x300" alt="Application Mobile">
+            <div class="project-content">
+                <h2>Projet RFTG - Partie Mobile</h2>
+                <p>
+                    Cette application mobile est conçue pour les clients du village vacances. Disponible sur Android et sur des bornes de location intégrées (tablettes), elle permet aux utilisateurs de parcourir le catalogue de DVD et de louer les films de leur choix. Les clients ont également la possibilité d’opter pour une livraison à domicile.
+                </p>
+                <div class="btn-container">
+                    <a href="rftg-mobile.html" class="btn">Voir les détails</a>
+                </div>
+            </div>
         </div>
     </div>
 </body>
