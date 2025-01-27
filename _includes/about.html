@@ -1,23 +1,49 @@
-<div class="user" style="display: flex; justify-content: space-between; align-items: center;">
-  <div class="tech" style="flex: 1; text-align: center;">
-    <h2>LinkedIn</h2>
-    <a href="https://fr.linkedin.com/in/pierre-challes-83b969255" target="_blank">
-      <img src="{{ '/assets/img/linkedIn.png' | prepend: site.baseurl }}" alt="Linkedin" style="width: 64px; height: 64px; display: block; margin: auto;">
-    </a>
-    <p style="margin-top: 10px;">Accès à mon Linkedin!</p>
+<div class="user" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+
+  <!-- Section Informations utilisateur -->
+  <div class="user-details" style="text-align: center; margin-bottom: 20px;">
+    <h1 style="margin-bottom: 10px;">Portfolio | Pierre CHALLES</h1>
+    <h3 style="margin: 0; color: #2c3e50;">Analyste programmeur</h3>
+    <p style="margin: 20px 0; max-width: 600px; line-height: 1.6;">
+      Hello, moi c'est <strong>Pierre CHALLES</strong> 👋<br><br>
+      Je suis actuellement étudiant au Centre de Formation 3iFA d'Alencon mais délocalisé à l'Aigle 🗺️ en première année de BTS SIO 
+      (Services Informatiques aux Organisations) dans l'option SLAM (Solutions Logicielles et Application Métier), 
+      une option spécialisée pour le développement 💻.<br><br>
+      Actuellement toujours en cours d'étude 🎓, je vous propose sur ce portfolio de retrouver les différentes études et projets professionnels 
+      que j'ai pu entreprendre au sein de ma carrière.<br><br>
+      Vous retrouverez ci-dessous mon CV ainsi que mes différents projets 👩‍💻.
+    </p>
+    <a href="mailto:pch@mtb111.fr" style="text-decoration: none; color: #3498db;">pch@mtb111.fr</a>
   </div>
-  <div class="tech" style="flex: 1; text-align: center;">
-    <h2>Code</h2>
-    <i class="devicon-java-plain colored" style="font-size: 64px;"></i>
-    <i class="devicon-javascript-plain colored" style="font-size: 64px;"></i>
-    <i class="devicon-nodejs-plain-wordmark" style="font-size: 64px;"></i>
-    <p style="margin-top: 10px;">Java, XML, Json, Js</p>
-  </div>
-  <div class="tech" style="flex: 1; text-align: center;">
-    <h2>Outils</h2>
-    <i class="devicon-git-plain" style="font-size: 64px;"></i>
-    <i class="devicon-gulp-plain colored" style="font-size: 64px;"></i>
-    <i class="devicon-atom-original-wordmark" style="font-size: 64px;"></i>
-    <p style="margin-top: 10px;">Eclipse, Xampp, Github, VirtualBox...</p>
+
+  <!-- Section Réseaux et compétences -->
+  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+
+    <!-- LinkedIn -->
+    <div class="tech" style="flex: 1; text-align: center;">
+      <h2>LinkedIn</h2>
+      <a href="https://fr.linkedin.com/in/pierre-challes-83b969255" target="_blank">
+        <img src="{{ '/assets/img/linkedIn.png' | prepend: site.baseurl }}" alt="Linkedin" style="width: 64px; height: 64px; display: block; margin: auto;">
+      </a>
+      <p style="margin-top: 10px;">Accès à mon Linkedin!</p>
+    </div>
+
+    <!-- Compétences -->
+    <div class="tech" style="flex: 1; text-align: center;">
+      <h2>Code</h2>
+      <i class="devicon-java-plain colored" style="font-size: 64px;"></i>
+      <i class="devicon-javascript-plain colored" style="font-size: 64px;"></i>
+      <i class="devicon-nodejs-plain-wordmark" style="font-size: 64px;"></i>
+      <p style="margin-top: 10px;">Java, XML, Json, Js</p>
+    </div>
+
+    <!-- Outils -->
+    <div class="tech" style="flex: 1; text-align: center;">
+      <h2>Outils</h2>
+      <i class="devicon-git-plain" style="font-size: 64px;"></i>
+      <i class="devicon-gulp-plain colored" style="font-size: 64px;"></i>
+      <i class="devicon-atom-original-wordmark" style="font-size: 64px;"></i>
+      <p style="margin-top: 10px;">Eclipse, Xampp, Github, VirtualBox...</p>
+    </div>
   </div>
 </div>
