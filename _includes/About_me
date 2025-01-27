@@ -2,23 +2,150 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Epreuve E4</title>
+    <title>Portfolio | Pierre CHALLES</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Pop-up Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+            padding-top: 60px;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 70%;
+            max-width: 600px;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+        }
+
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            padding: 5px;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Section style */
+        h1, h3 {
+            color: #333;
+        }
+
+        p {
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+        }
+
+        .cv-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .cv-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
-    <div class="user-details" id="me"
 
- <!-- Section Informations utilisateur -->
-  <div class="user-details" style="text-align: center; margin-bottom: 20px;">
-    <h1 style="margin-bottom: 10px;">Portfolio | Pierre CHALLES</h1>
-    <h3 style="margin: 0; color: #2c3e50;">Analyste programmeur</h3>
-    <p style="margin: 20px 0; max-width: 600px; line-height: 1.6;">
-      Hello, moi c'est <strong>Pierre CHALLES</strong> 👋<br><br>
-      Je suis actuellement étudiant au Centre de Formation 3iFA d'Alencon mais délocalisé à l'Aigle 🗺️ en première année de BTS SIO 
-      (Services Informatiques aux Organisations) dans l'option SLAM (Solutions Logicielles et Application Métier), 
-      une option spécialisée pour le développement 💻.<br><br>
-      Actuellement toujours en cours d'étude🎓, je vous propose sur ce portfolio de retrouver les différentes études et projets professionnels 
-      que j'ai pu entreprendre au sein de ma carrière.<br><br>
-      Vous retrouverez ci-dessous mon CV ainsi que mes différents projets 👩‍💻.
-    </p>
-    <a href="mailto:pch@mtb111.fr" style="text-decoration: none; color: #3498db;">pch@mtb111.fr</a>
-  </div>
+    <!-- Container principal -->
+    <div class="container">
+        <!-- Section Informations utilisateur -->
+        <h1>Portfolio | Pierre CHALLES</h1>
+        <h3>Analyste programmeur</h3>
+        <p>
+            Hello, moi c'est <strong>Pierre CHALLES</strong> 👋<br><br>
+            Je suis actuellement étudiant au Centre de Formation 3iFA d'Alencon mais délocalisé à l'Aigle 🗺️ en première année de BTS SIO 
+            (Services Informatiques aux Organisations) dans l'option SLAM (Solutions Logicielles et Application Métier), 
+            une option spécialisée pour le développement 💻.<br><br>
+            Actuellement toujours en cours d'étude 🎓, je vous propose sur ce portfolio de retrouver les différentes études et projets professionnels 
+            que j'ai pu entreprendre au sein de ma carrière.<br><br>
+            Vous retrouverez ci-dessous mon CV ainsi que mes différents projets 👩‍💻.
+        </p>
+
+        <!-- Bouton pour afficher le CV -->
+        <button class="cv-btn" id="cvBtn">Voir mon CV</button>
+    </div>
+
+    <!-- Pop-up pour le CV -->
+    <div class="popup" id="cvPopup">
+        <div class="popup-content">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <h2>Mon CV</h2>
+            <p>
+                Voici mon CV détaillé avec toutes mes expériences, compétences et formations. Vous pouvez consulter la version complète ici.
+                <br><br>
+                <!-- Lien vers le CV à télécharger ou ouvrir -->
+                <a href="path_to_your_cv.pdf" target="_blank" class="cv-btn">Télécharger le CV</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Ouvrir le pop-up
+        const cvBtn = document.getElementById('cvBtn');
+        const cvPopup = document.getElementById('cvPopup');
+        const closeBtn = document.getElementById('closeBtn');
+
+        cvBtn.addEventListener('click', function() {
+            cvPopup.style.display = 'block';
+        });
+
+        // Fermer le pop-up
+        closeBtn.addEventListener('click', function() {
+            cvPopup.style.display = 'none';
+        });
+
+        // Fermer le pop-up si l'utilisateur clique à l'extérieur
+        window.addEventListener('click', function(event) {
+            if (event.target === cvPopup) {
+                cvPopup.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
