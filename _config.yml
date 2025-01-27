@@ -12,6 +12,6 @@ email: pch@mtb111.fr
 
 # Google-analytics
 google-analytics:
-  id: ""
+  id: "moi"
 
 exclude: ['package.json', 'src' , 'node_modules']
