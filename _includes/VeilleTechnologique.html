@@ -2,7 +2,82 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veille Technologique</title>
+    <style>
+        /* Style global */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Style du header */
+        .user-details {
+            background-color: #1e1e1e;
+            text-align: center;
+            padding: 50px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #00bcd4;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* Animation de fade-in */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Contenu */
+        .user-tech-watch {
+            padding: 20px 30px;
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-tech-watch h3 {
+            color: #00bcd4;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .user-tech-watch p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #ddd;
+            text-align: justify;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .user-details h1 {
+                font-size: 2.5em;
+            }
+
+            .user-tech-watch h3 {
+                font-size: 1.8em;
+            }
+
+            .user-tech-watch p {
+                font-size: 1.1em;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="user-details" id="tech-watch">
