@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Epreuve E4</title>
+</head>
+<body>
+    <div class="user-details" id="me"
+
  <!-- Section Informations utilisateur -->
   <div class="user-details" style="text-align: center; margin-bottom: 20px;">
     <h1 style="margin-bottom: 10px;">Portfolio | Pierre CHALLES</h1>
