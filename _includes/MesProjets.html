@@ -39,8 +39,10 @@
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            transform: scale(1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
 
         .project:hover {
@@ -71,28 +73,6 @@
             text-align: justify;
         }
 
-        /* Button */
-        .btn-container {
-            margin-top: 20px;
-        }
-
-        .btn-container .btn {
-            text-decoration: none;
-            display: inline-block;
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #e91e63, #f36ca6);
-            color: #fff;
-            border-radius: 8px;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.4);
-            font-size: 1.1em;
-        }
-
-        .btn-container .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(233, 30, 99, 0.6);
-        }
-
         /* Alternate Layout */
         .project:nth-child(odd) {
             flex-direction: row-reverse;
@@ -121,32 +101,26 @@
         </div>
 
         <!-- Projet RFTG - Application Web -->
-        <div class="project">
+        <a href="RFTGweb.html" class="project">
             <img src="https://via.placeholder.com/600x400" alt="Application Web">
             <div class="project-content">
                 <h2>Projet RFTG - Partie Web</h2>
                 <p>
                     Cette application est destinée à M. Emet Brown et à son équipe pour la gestion des activités liées aux DVD dans le village vacances. Accessible via un navigateur web, elle permet aux employés de gérer efficacement le stock de DVD. Les fonctionnalités incluent l’ajout, la suppression, la mise à jour et la recherche de DVD par titre, genre ou époque.
                 </p>
-                <div class="btn-container">
-                    <a href="RFTGweb.html" class="btn">Voir les détails</a>
-                </div>
             </div>
-        </div>
+        </a>
 
         <!-- Projet RFTG - Application Mobile -->
-        <div class="project">
+        <a href="RFTGmobile.html" class="project">
             <img src="https://via.placeholder.com/600x400" alt="Application Mobile">
             <div class="project-content">
                 <h2>Projet RFTG - Partie Mobile</h2>
                 <p>
                     Cette application mobile est conçue pour les clients du village vacances. Disponible sur Android et sur des bornes de location intégrées (tablettes), elle permet aux utilisateurs de parcourir le catalogue de DVD et de louer les films de leur choix. Les clients ont également la possibilité d’opter pour une livraison à domicile.
                 </p>
-                <div class="btn-container">
-                    <a href="RFTGmobile.html" class="btn">Voir les détails</a>
-                </div>
             </div>
-        </div>
+        </a>
     </div>
 </body>
 </html>
