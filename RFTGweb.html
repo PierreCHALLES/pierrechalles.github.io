@@ -1,55 +1,100 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet RFTG - Partie Web</title>
     <style>
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
+            background-color: #1e1e2f;
+            color: #f5f5f7;
+            line-height: 1.6;
         }
 
+        a {
+            text-decoration: none;
+        }
+
+        /* Container */
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 1100px;
+            margin: 40px auto;
             padding: 20px;
+            background: #292b3d;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
+        /* Header */
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: #e91e63;
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
 
+        /* Sections */
         .section {
-            margin: 20px 0;
+            margin: 30px 0;
+            padding: 20px;
+            background: #2f3147;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .section h2 {
-            color: #3498db;
+            color: #29b6f6;
+            font-size: 1.8em;
+            margin-bottom: 10px;
         }
 
+        .section p,
+        .section ul {
+            font-size: 1.1em;
+            color: #c7c9d3;
+        }
+
+        .section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        /* Button */
         .btn-container {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .btn {
-            background-color: #3498db;
+            display: inline-block;
+            background: linear-gradient(45deg, #e91e63, #f36ca6);
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            font-size: 1.2em;
+            padding: 12px 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.4);
         }
 
         .btn:hover {
-            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(233, 30, 99, 0.6);
+        }
+
+        /* Images */
+        .img-container {
+            margin-top: 20px;
+            text-align: center;
         }
 
         .img-container img {
-            width: 100%;
-            border-radius: 8px;
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
