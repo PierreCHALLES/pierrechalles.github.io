@@ -12,7 +12,6 @@
             background-color: #f5f5f5;
             color: #000;
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
         .container {
@@ -24,31 +23,72 @@
 
         .user-details h1 {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             font-size: 2.5em;
             color: #29b6f6;
             text-transform: uppercase;
         }
 
-        /* StructurAll Section Styling */
-        .user-projects {
+        /* Project Card */
+        .project {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            background: #e0e0e0; /* Gris clair */
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .project:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .project img {
+            width: 50%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .project-content {
+            flex: 1;
+            padding: 20px 30px;
+        }
+
+        .project-content h2 {
+            margin-top: 0;
+            font-size: 1.8em;
+            color: #29b6f6;
+        }
+
+        .project-content p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        /* StructurAll Project Styling */
+        .structurall-project {
             display: flex;
             margin-top: 80px;
             padding: 20px;
             background: #e0e0e0;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-decoration: none;
             color: inherit;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .user-projects:hover {
+        .structurall-project:hover {
             transform: scale(1.02);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .user-projects .images-right {
+        .structurall-project .images-right {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -57,42 +97,45 @@
             gap: 10px;
         }
 
-        .user-projects img {
+        .structurall-project img {
             max-width: 90%;
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .user-projects .contents {
+        .structurall-project .contents {
             flex: 2;
             padding: 20px;
         }
 
-        .user-projects .contents h3 {
+        .structurall-project .contents h3 {
             font-size: 2em;
             color: #29b6f6;
         }
 
-        .user-projects .contents ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-
-        .user-projects .contents p {
+        .structurall-project .contents p {
             margin-top: 10px;
             text-align: justify;
         }
 
         /* Responsive Design */
         @media screen and (max-width: 768px) {
-            .user-projects {
+            .project, .structurall-project {
                 flex-direction: column;
             }
 
-            .user-projects .images-right {
+            .project img, .structurall-project img {
+                width: 100%;
+            }
+
+            .structurall-project .images-right {
                 flex-direction: row;
                 justify-content: center;
+            }
+
+            .structurall-project .contents {
+                text-align: center;
             }
         }
     </style>
@@ -103,17 +146,36 @@
             <h1>Mes Projets</h1>
         </div>
 
-        <!-- Projet StructurAll (cliquable) -->
-        <a href="StructurAll.html" class="user-projects">
+        <!-- Projet RFTG - Application Web -->
+        <a href="RFTGweb.html" class="project">
+            <img src="assets/img/coming soon.jpg" alt="Application Web">
+            <div class="project-content">
+                <h2>Projet RFTG - Partie Web</h2>
+                <p>
+                    Cette application est destinée à M. Emet Brown et à son équipe pour la gestion des activités liées aux DVD dans le village vacances. Accessible via un navigateur web, elle permet aux employés de gérer efficacement le stock de DVD. Les fonctionnalités incluent l’ajout, la suppression, la mise à jour et la recherche de DVD par titre, genre ou époque.
+                </p>
+            </div>
+        </a>
+
+        <!-- Projet RFTG - Application Mobile -->
+        <a href="RFTGmobile.html" class="project">
+            <img src="assets/img/coming soon.jpg" alt="Application Mobile">
+            <div class="project-content">
+                <h2>Projet RFTG - Partie Mobile</h2>
+                <p>
+                    Cette application mobile est conçue pour les clients du village vacances. Disponible sur Android et sur des bornes de location intégrées (tablettes), elle permet aux utilisateurs de parcourir le catalogue de DVD et de louer les films de leur choix. Les clients ont également la possibilité d’opter pour une livraison à domicile.
+                </p>
+            </div>
+        </a>
+
+        <!-- Projet StructurAll -->
+        <a href="StructurAll.html" class="structurall-project">
             <div class="images-right">
                 <img alt="StructurAll" src="assets/img/StructurAll.jpg" />
                 <img alt="StructurAll" src="assets/img/StructurAll2.jpg" />
             </div>
             <div class="contents">
                 <h3>Projet StructurAll</h3>
-                <ul>
-                    <li>(Partie entreprise)</li>
-                </ul>
                 <p>
                     Structurall Machine® est une plateforme de conception de systèmes automates (applications, ...).<br><br>
                     Structurall Machine® permet à chacun de concevoir de manière efficace un système automate par une démarche structurelle, de le simuler et dans un cadre plus global, de maîtriser les systèmes que l'on construit et que l'on fait évoluer.
