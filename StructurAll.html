@@ -1,88 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StructurAll - Portfolio</title>
-    <link href="styles.css" rel="stylesheet">
+    <title>Projet StructurAll</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fdf5e6;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Header */
+        header {
+            background: #ff5722;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        header p {
+            font-style: italic;
+            font-size: 1.2em;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sections */
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border-left: 5px solid #ff5722;
+            background: #f9f3ef;
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            color: #ff5722;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .section p,
+        .section ul {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .section ul {
+            list-style-type: square;
+            margin-left: 20px;
+        }
+
+        /* Button */
+        .btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #ff5722;
+            color: white;
+            font-size: 1.2em;
+            padding: 12px 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background: #e64a19;
+        }
+
+        /* Images */
+        .img-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #ff5722;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>StructurAll - Portfolio</h1>
+        <h1>StructurAll - Compte Rendu</h1>
+        <p>Mise à jour et migration technique</p>
     </header>
-    <main>
-        <section id="introduction">
-            <h2>Introduction</h2>
-            <p>Bienvenue sur le portfolio StructurAll. Cette page présente les détails du projet, ses évolutions techniques, et les résultats obtenus.</p>
-        </section>
 
-        <section id="compte-rendu">
-            <h2>Compte Rendu StructurAll - Migration et Mise à Jour</h2>
-            <h3>Contexte :</h3>
-            <p>Le projet StructurAll a nécessité une importante mise à jour pour aligner les technologies sur les standards modernes, améliorer les performances et garantir la pérennité du système. Voici les principales étapes et réalisations de ce projet.</p>
+    <div class="container">
+        <div class="section">
+            <h2>Contexte</h2>
+            <p>
+                Le projet StructurAll a nécessité une importante mise à jour pour aligner les technologies sur les standards modernes, améliorer les performances et garantir la pérennité du système. Voici les principales étapes et réalisations de ce projet.
+            </p>
+        </div>
 
-            <h3>1. Migration de Java 1.7 vers Java 1.17</h3>
+        <div class="section">
+            <h2>1. Migration de Java 1.7 vers Java 1.17</h2>
             <ul>
                 <li><strong>Remplacement de XStream par Jakarta :</strong> La migration de Java a impliqué l’abandon de XStream au profit de Jakarta pour s’aligner sur les normes Jakarta EE modernes.</li>
                 <li><strong>Adaptation du code existant :</strong> Les incompatibilités liées aux anciennes API ont été corrigées pour garantir le bon fonctionnement avec Java 17.</li>
             </ul>
+        </div>
 
-            <h3>2. Mise à Jour des Librairies</h3>
+        <div class="section">
+            <h2>2. Mise à Jour des Librairies</h2>
             <ul>
                 <li><strong>Mises à jour des versions :</strong> Adoption des nouvelles versions des dépendances critiques, notamment LogManager 2.22 et Jersey 3.1.0.</li>
                 <li><strong>Implémentation d’alternatives :</strong> Lorsque les librairies précédentes n’étaient plus supportées, des solutions alternatives ont été intégrées.</li>
             </ul>
+        </div>
 
-            <h3>3. Migration de la Base de Données MongoDB</h3>
+        <div class="section">
+            <h2>3. Migration de la Base de Données MongoDB</h2>
             <ul>
                 <li><strong>Passage de Mongo 2.6.0 à 6.0.18 :</strong> Une migration majeure a permis d'exploiter les fonctionnalités avancées de MongoDB 6.0.18.</li>
-                <li><strong>Mise à jour des fichiers Mongo :</strong>
-                    <ul>
-                        <li><strong>ContenuMongo</strong> et <strong>StructureMongo</strong> ont été adaptés pour garantir une interaction optimale avec la nouvelle version de MongoDB.</li>
-                        <li>Les appels aux collections ont été revus pour maintenir la compatibilité avec le nouveau pilote MongoDB.</li>
-                    </ul>
-                </li>
+                <li><strong>Mise à jour des fichiers Mongo :</strong> ContenuMongo et StructureMongo ont été adaptés pour garantir une interaction optimale avec la nouvelle version de MongoDB.</li>
+                <li>Les appels aux collections ont été revus pour maintenir la compatibilité avec le nouveau pilote MongoDB.</li>
             </ul>
+        </div>
 
-            <h3>4. Gestion des Conversions Objets/Xml</h3>
+        <div class="section">
+            <h2>4. Gestion des Conversions Objets/XML</h2>
             <ul>
                 <li><strong>Fichiers de conversion (FicTools) :</strong> Ces fichiers ont été modifiés pour garantir une conversion fluide des objets Java en XML tout en respectant les nouvelles normes Jakarta.</li>
             </ul>
+        </div>
 
-            <h3>5. Migration du Serveur</h3>
+        <div class="section">
+            <h2>5. Migration du Serveur</h2>
             <ul>
-                <li><strong>Passage de Tomcat 7 à Tomcat 10.1.29 :</strong>
-                    <ul>
-                        <li>Le serveur d’applications a été mis à jour pour bénéficier des optimisations et fonctionnalités offertes par la dernière version de Tomcat.</li>
-                        <li>Les fichiers de configuration XML du serveur ont été modifiés pour refléter les nouvelles dépendances et configurations requises.</li>
-                    </ul>
-                </li>
+                <li><strong>Passage de Tomcat 7 à Tomcat 10.1.29 :</strong> Le serveur d’applications a été mis à jour pour bénéficier des optimisations et fonctionnalités offertes par la dernière version de Tomcat.</li>
+                <li><strong>Mise à jour des fichiers de configuration XML :</strong> Les fichiers du serveur ont été modifiés pour refléter les nouvelles dépendances et configurations requises.</li>
                 <li><strong>Ajout des nouvelles librairies :</strong> Les librairies nécessaires (notamment Jakarta et MongoDB) ont été intégrées au serveur.</li>
             </ul>
+        </div>
 
-            <h3>6. Gestion de la Structure et du Code Source</h3>
+        <div class="section">
+            <h2>6. Gestion de la Structure et du Code Source</h2>
             <ul>
-                <li><strong>Structuration GitLab :</strong>
-                    <ul>
-                        <li>Chaque étape de la migration a été versionnée sur GitLab.</li>
-                        <li>Un suivi rigoureux des commits a permis de documenter chaque changement et de garantir la traçabilité.</li>
-                    </ul>
-                </li>
+                <li><strong>Structuration GitLab :</strong> Chaque étape de la migration a été versionnée sur GitLab.</li>
+                <li>Un suivi rigoureux des commits a permis de documenter chaque changement et de garantir la traçabilité.</li>
             </ul>
+        </div>
 
-            <h3>Pages du Projet</h3>
-            <ul>
-                <li>Page d’accueil</li>
-                <li>Page de connexion</li>
-                <li>Page de menu StandAlone</li>
-                <li>Page de SO</li>
-                <li>Page d’AP</li>
-            </ul>
-        </section>
-    </main>
+        <div class="btn-container">
+            <a href="index.html" class="btn">Retour à l'accueil</a>
+        </div>
+    </div>
 
     <footer>
-        <p>&copy; 2025 StructurAll - Tous droits réservés</p>
+        <p>© 2025 StructurAll. Tous droits réservés.</p>
     </footer>
 </body>
 </html>
