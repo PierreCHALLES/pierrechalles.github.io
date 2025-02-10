@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet StruturAll</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #f5f5f7;
+            line-height: 1.6;
+        }
 
+        a {
+            text-decoration: none;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #292b3d;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header */
+        h1 {
+            text-align: center;
+            color: #e91e63;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        /* Sections */
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #2f3147;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #29b6f6;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .section p,
+        .section ul {
+            font-size: 1.1em;
+            color: #c7c9d3;
+        }
+
+        .section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        /* Button */
+        .btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #e91e63, #f36ca6);
+            color: white;
+            font-size: 1.2em;
+            padding: 12px 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(233, 30, 99, 0.6);
+        }
+
+        /* Images */
+        .img-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Projet StructurAll</h1>
+
+        <div class="section">
+            <h2>Description</h2>
+            <p>
+                Cette application est le coeur d'MTB, la création d'arbre porgrammatique et de système d'objet.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Fonctionnalités principales</h2>
+            <ul>
+                <li>Création d'AP/SO</li>
+                <li>Importation et Exportation des AP/SO en plusieurs language</li>
+                <li>Impression des AP/SO</li>
+                <li>vérification du résultat en executant l'action</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Technologies utilisées</h2>
+            <ul>
+                <li>HTML, CSS, JavaScript, SQL, Cobol, </li>
+                <li>MongoDB pour la gestion des bases de données</li>
+                <li>Tomcat pour le serveur en local</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Exemples d'écran</h2>
+            <div class="img-container">
+                <img src="https://via.placeholder.com/800x400" alt="Capture de l'application web">
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <a href="index.html" class="btn">Retour à l'accueil</a>
+        </div>
+    </div>
+
+</body>
+</html>
