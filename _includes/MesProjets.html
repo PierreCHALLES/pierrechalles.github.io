@@ -73,23 +73,61 @@
             text-align: justify;
         }
 
-        /* Alternate Layout */
-        .project:nth-child(odd) {
-            flex-direction: row-reverse;
+        /* StructurAll Section Styling */
+        .user-projects {
+            display: flex;
+            margin-top: 80px;
+            padding: 20px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-projects .images-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .user-projects img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-projects .contents {
+            flex: 2;
+            padding: 20px;
+        }
+
+        .user-projects .contents h3 {
+            font-size: 2em;
+            color: #29b6f6;
+        }
+
+        .user-projects .contents ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .user-projects .contents p {
+            margin-top: 10px;
+            text-align: justify;
         }
 
         /* Responsive Design */
         @media screen and (max-width: 768px) {
-            .project {
+            .user-projects {
                 flex-direction: column;
             }
 
-            .project img {
-                width: 100%;
-            }
-
-            .project-content {
-                text-align: center;
+            .user-projects .images-right {
+                flex-direction: row;
+                justify-content: center;
             }
         }
     </style>
@@ -121,6 +159,25 @@
                 </p>
             </div>
         </a>
+
+        <!-- Projet StructurAll -->
+        <div class="user-projects">
+            <div class="images-right">
+                <img alt="StructurAll" src="assets/img/StructurAll.jpg" />
+                <img alt="StructurAll" src="assets/img/StructurAll2.jpg" />
+            </div>
+            <div class="contents">
+                <h3>Projet StructurAll</h3>
+                <ul>
+                    <li>(Partie entreprise)</li>
+                </ul>
+                <p>
+                    Structurall Machine® est une plateforme de conception de systèmes automates (applications, ...).<br><br>
+                    Structurall Machine® permet à chacun de concevoir de manière efficace un système automate par une démarche structurelle, de le simuler et dans un cadre plus global, de maîtriser les systèmes que l'on construit et que l'on fait évoluer.
+                    Aucune connaissance technique particulière n'est nécessaire pour l'utiliser.
+                </p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
