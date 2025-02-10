@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet StruturAll</title>
+    <title>Projet StructurAll</title>
     <style>
         /* Global Styles */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1e1e2f;
-            color: #f5f5f7;
+            background-color: #fdf5e6;
+            color: #333;
             line-height: 1.6;
         }
 
@@ -19,35 +19,45 @@
             text-decoration: none;
         }
 
+        /* Header */
+        header {
+            background: #ff5722;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        header p {
+            font-style: italic;
+            font-size: 1.2em;
+        }
+
         /* Container */
         .container {
             max-width: 1100px;
             margin: 40px auto;
             padding: 20px;
-            background: #292b3d;
+            background: #fff;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Header */
-        h1 {
-            text-align: center;
-            color: #e91e63;
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         /* Sections */
         .section {
             margin: 30px 0;
             padding: 20px;
-            background: #2f3147;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #ff5722;
+            background: #f9f3ef;
+            border-radius: 8px;
         }
 
         .section h2 {
-            color: #29b6f6;
+            color: #ff5722;
             font-size: 1.8em;
             margin-bottom: 10px;
         }
@@ -55,11 +65,11 @@
         .section p,
         .section ul {
             font-size: 1.1em;
-            color: #c7c9d3;
+            color: #333;
         }
 
         .section ul {
-            list-style-type: disc;
+            list-style-type: square;
             margin-left: 20px;
         }
 
@@ -71,18 +81,16 @@
 
         .btn {
             display: inline-block;
-            background: linear-gradient(45deg, #e91e63, #f36ca6);
+            background: #ff5722;
             color: white;
             font-size: 1.2em;
             padding: 12px 25px;
             border-radius: 8px;
             transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.4);
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(233, 30, 99, 0.6);
+            background: #e64a19;
         }
 
         /* Images */
@@ -96,17 +104,33 @@
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #ff5722;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
+    <header>
+        <h1>StructurAll Machine</h1>
+        <p>« Dessine-moi la structure... »</p>
+    </header>
 
     <div class="container">
-        <h1>Projet StructurAll</h1>
-
         <div class="section">
             <h2>Description</h2>
             <p>
-                Cette application est le coeur d'MTB, la création d'arbre porgrammatique et de système d'objet.
+                Cette application est le cœur de StructurAll : la création d'arbres programmatiques et de systèmes d'objets.
             </p>
         </div>
 
@@ -114,16 +138,16 @@
             <h2>Fonctionnalités principales</h2>
             <ul>
                 <li>Création d'AP/SO</li>
-                <li>Importation et Exportation des AP/SO en plusieurs language</li>
+                <li>Importation et exportation des AP/SO dans plusieurs langages</li>
                 <li>Impression des AP/SO</li>
-                <li>vérification du résultat en executant l'action</li>
+                <li>Exécution des actions pour vérification des résultats</li>
             </ul>
         </div>
 
         <div class="section">
             <h2>Technologies utilisées</h2>
             <ul>
-                <li>HTML, CSS, JavaScript, SQL, Cobol, </li>
+                <li>HTML, CSS, JavaScript, SQL, Cobol</li>
                 <li>MongoDB pour la gestion des bases de données</li>
                 <li>Tomcat pour le serveur en local</li>
             </ul>
@@ -141,5 +165,8 @@
         </div>
     </div>
 
+    <footer>
+        <p>© 2025 StructurAll Machine. Tous droits réservés.</p>
+    </footer>
 </body>
 </html>
