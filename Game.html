@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Plateforme Avancé</title>
+    <title>Super Platformer</title>
     <style>
         body {
             margin: 0;
@@ -14,61 +14,87 @@
         canvas {
             display: block;
             margin: 0 auto;
-            background: #222;
-            border: 2px solid #fff;
+            background: #5c94fc;
+            border-bottom: 5px solid #3b6cc5;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: #fff;
+            color: #000;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-link">Retour au portfolio</a>
     <canvas id="platformer" width="800" height="400"></canvas>
+
     <script>
         const canvas = document.getElementById('platformer');
         const ctx = canvas.getContext('2d');
-        
+
+        // Jeu inspiré de Mario
         const gravity = 0.8;
         const friction = 0.9;
 
+        // Joueur
         const player = {
-            x: 50, y: 300, width: 30, height: 30,
-            color: "#29b6f6", speedX: 0, speedY: 0,
-            grounded: false, score: 0, invincible: false
+            x: 50,
+            y: 300,
+            width: 30,
+            height: 40,
+            color: "#ffcc00",
+            speedX: 0,
+            speedY: 0,
+            grounded: false,
+            score: 0,
+            powerUp: false
         };
 
         let currentLevel = 0;
+
+        // Niveaux
         const levels = [
             {
                 platforms: [
-                    { x: 0, y: 380, width: 800, height: 20, color: "#444" },
-                    { x: 200, y: 300, width: 100, height: 10, color: "#555" },
-                    { x: 450, y: 250, width: 120, height: 10, color: "#666" }
+                    { x: 0, y: 380, width: 800, height: 20, color: "#8B4513" },
+                    { x: 150, y: 300, width: 100, height: 10, color: "#32CD32" },
+                    { x: 350, y: 250, width: 100, height: 10, color: "#32CD32" },
+                    { x: 550, y: 200, width: 100, height: 10, color: "#32CD32" }
                 ],
                 enemies: [
-                    { x: 300, y: 355, width: 30, height: 30, color: "#ff5555", speed: 2, direction: 1 }
+                    { x: 400, y: 355, width: 30, height: 30, color: "#ff0000", speed: 2, direction: 1 }
                 ],
-                spikes: [
-                    { x: 600, y: 370, width: 40, height: 10, color: "#ff0000" }
+                bonuses: [
+                    { x: 600, y: 180, width: 20, height: 20, color: "#ffd700", collected: false }
+                ]
+            },
+            {
+                platforms: [
+                    { x: 0, y: 380, width: 800, height: 20, color: "#8B4513" },
+                    { x: 100, y: 300, width: 120, height: 10, color: "#32CD32" },
+                    { x: 350, y: 250, width: 100, height: 10, color: "#32CD32" },
+                    { x: 550, y: 200, width: 100, height: 10, color: "#32CD32" },
+                    { x: 700, y: 150, width: 100, height: 10, color: "#32CD32" }
                 ],
-                powerUps: [
-                    { x: 500, y: 220, width: 20, height: 20, color: "#00ff00", active: true }
+                enemies: [
+                    { x: 500, y: 355, width: 30, height: 30, color: "#ff0000", speed: 3, direction: -1 }
+                ],
+                bonuses: [
+                    { x: 750, y: 120, width: 20, height: 20, color: "#ffd700", collected: false }
                 ]
             }
         ];
-
-        const keys = { right: false, left: false, up: false };
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') keys.right = true;
-            if (e.key === 'ArrowLeft') keys.left = true;
-            if (e.key === 'ArrowUp' && player.grounded) {
-                player.speedY = -15;
-                player.grounded = false;
-            }
-        });
-
-        window.addEventListener('keyup', (e) => {
-            if (e.key === 'ArrowRight') keys.right = false;
-            if (e.key === 'ArrowLeft') keys.left = false;
-        });
 
         function detectCollision(rect1, rect2) {
             return rect1.x < rect2.x + rect2.width &&
@@ -79,52 +105,45 @@
 
         function update() {
             player.speedY += gravity;
-            if (player.grounded) player.speedX *= friction;
-            if (keys.right) player.speedX = 5;
-            if (keys.left) player.speedX = -5;
-
             player.x += player.speedX;
             player.y += player.speedY;
-            
             player.grounded = false;
+
             levels[currentLevel].platforms.forEach(platform => {
                 if (detectCollision(player, platform)) {
-                    if (player.speedY > 0 && player.y + player.height <= platform.y + player.speedY) {
-                        player.grounded = true;
-                        player.speedY = 0;
-                        player.y = platform.y - player.height;
-                    }
+                    player.grounded = true;
+                    player.speedY = 0;
+                    player.y = platform.y - player.height;
+                }
+            });
+
+            levels[currentLevel].bonuses.forEach(bonus => {
+                if (!bonus.collected && detectCollision(player, bonus)) {
+                    bonus.collected = true;
+                    player.score += 100;
                 }
             });
 
             levels[currentLevel].enemies.forEach(enemy => {
                 enemy.x += enemy.speed * enemy.direction;
-                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) enemy.direction *= -1;
-                if (!player.invincible && detectCollision(player, enemy)) {
-                    alert("Oh non ! Vous avez été touché !");
+                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
+                    enemy.direction *= -1;
+                }
+                if (detectCollision(player, enemy)) {
+                    alert("Vous avez perdu !");
                     resetPlayer();
                 }
             });
 
-            levels[currentLevel].spikes.forEach(spike => {
-                if (!player.invincible && detectCollision(player, spike)) {
-                    alert("Vous êtes mort!");
-                    resetPlayer();
-                }
-            });
-
-            levels[currentLevel].powerUps.forEach(powerUp => {
-                if (powerUp.active && detectCollision(player, powerUp)) {
-                    player.invincible = true;
-                    powerUp.active = false;
-                    setTimeout(() => player.invincible = false, 5000);
-                }
-            });
+            if (player.y > canvas.height) {
+                alert("Vous êtes tombé !");
+                resetPlayer();
+            }
         }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = player.invincible ? "yellow" : player.color;
+            ctx.fillStyle = player.color;
             ctx.fillRect(player.x, player.y, player.width, player.height);
 
             levels[currentLevel].platforms.forEach(platform => {
@@ -132,22 +151,21 @@
                 ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
             });
 
+            levels[currentLevel].bonuses.forEach(bonus => {
+                if (!bonus.collected) {
+                    ctx.fillStyle = bonus.color;
+                    ctx.fillRect(bonus.x, bonus.y, bonus.width, bonus.height);
+                }
+            });
+
             levels[currentLevel].enemies.forEach(enemy => {
                 ctx.fillStyle = enemy.color;
                 ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
             });
 
-            levels[currentLevel].spikes.forEach(spike => {
-                ctx.fillStyle = spike.color;
-                ctx.fillRect(spike.x, spike.y, spike.width, spike.height);
-            });
-
-            levels[currentLevel].powerUps.forEach(powerUp => {
-                if (powerUp.active) {
-                    ctx.fillStyle = powerUp.color;
-                    ctx.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
-                }
-            });
+            ctx.fillStyle = "#fff";
+            ctx.font = "20px Arial";
+            ctx.fillText("Score : " + player.score, 10, 30);
         }
 
         function resetPlayer() {
@@ -155,7 +173,6 @@
             player.y = 300;
             player.speedX = 0;
             player.speedY = 0;
-            player.invincible = false;
         }
 
         function gameLoop() {
