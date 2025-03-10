@@ -3,111 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kart Racing Game</title>
+    <title>Jeu de Kart 2D</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #000;
-            color: white;
-            font-family: Arial, sans-serif;
+            background-color: #87CEEB;
             text-align: center;
+            font-family: Arial, sans-serif;
         }
         canvas {
+            background: #222;
             display: block;
             margin: auto;
-            background: #87CEEB;
+            border: 2px solid white;
         }
-        .menu {
+        #menu {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
+            background: white;
             padding: 20px;
             border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
         }
-        .menu button {
-            display: block;
-            margin: 10px auto;
-            padding: 10px;
-            font-size: 18px;
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="menu" class="menu">
-        <h1>Choisissez votre circuit</h1>
-        <select id="trackSelect">
-            <option value="1">Circuit 1</option>
-            <option value="2">Circuit 2</option>
-            <option value="3">Circuit 3</option>
+    <div id="menu">
+        <h1>Choisir un circuit et un kart</h1>
+        <label for="track">Circuit :</label>
+        <select id="track">
+            <option value="0">Circuit Simple</option>
+            <option value="1">Circuit Difficile</option>
         </select>
-        <h1>Choisissez votre couleur de kart</h1>
+        <br><br>
+        <label for="kartColor">Couleur du Kart :</label>
         <input type="color" id="kartColor" value="#ff0000">
-        <button onclick="startGame()">Démarrer</button>
+        <br><br>
+        <button onclick="startGame()">Commencer</button>
     </div>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <canvas id="gameCanvas" width="800" height="600" class="hidden"></canvas>
+
     <script>
-        let canvas = document.getElementById("gameCanvas");
-        let ctx = canvas.getContext("2d");
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
         let gameRunning = false;
-        let track = 1;
-        let kartColor = "#ff0000";
-        let player = { x: 400, y: 500, width: 40, height: 60, speed: 5 };
-        let opponents = [{ x: 300, y: 200, width: 40, height: 60, speed: 3 }, { x: 500, y: 100, width: 40, height: 60, speed: 4 }];
-        let bonuses = [{ x: 350, y: 300, width: 20, height: 20 }];
-        let maluses = [{ x: 450, y: 400, width: 20, height: 20 }];
+        let playerKart, enemies, bonuses, track;
+        const tracks = [
+            { name: "Circuit Simple", obstacles: [], checkpoints: [] },
+            { name: "Circuit Difficile", obstacles: [{x: 300, y: 200, width: 100, height: 100}], checkpoints: [{x: 700, y: 500}] }
+        ];
 
         function startGame() {
-            document.getElementById("menu").style.display = "none";
+            document.getElementById('menu').classList.add('hidden');
+            canvas.classList.remove('hidden');
+            const trackIndex = document.getElementById('track').value;
+            const kartColor = document.getElementById('kartColor').value;
+            initGame(trackIndex, kartColor);
             gameRunning = true;
-            track = document.getElementById("trackSelect").value;
-            kartColor = document.getElementById("kartColor").value;
             gameLoop();
         }
 
-        function drawPlayer() {
-            ctx.fillStyle = kartColor;
-            ctx.fillRect(player.x, player.y, player.width, player.height);
+        function initGame(trackIndex, kartColor) {
+            track = tracks[trackIndex];
+            playerKart = { x: 100, y: 500, width: 50, height: 30, color: kartColor, speed: 0, angle: 0 };
+            enemies = [{ x: 120, y: 500, width: 50, height: 30, color: "blue", speed: 2, angle: 0 }];
+            bonuses = [{ x: 400, y: 300, width: 20, height: 20, color: "yellow" }];
         }
 
-        function drawOpponents() {
-            ctx.fillStyle = "blue";
-            opponents.forEach(opponent => {
-                ctx.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
-                opponent.y += opponent.speed;
-                if (opponent.y > canvas.height) opponent.y = -60;
+        function updateGame() {
+            if (keys.ArrowUp) playerKart.speed += 0.2;
+            if (keys.ArrowDown) playerKart.speed -= 0.2;
+            if (keys.ArrowLeft) playerKart.angle -= 0.05;
+            if (keys.ArrowRight) playerKart.angle += 0.05;
+            playerKart.x += Math.cos(playerKart.angle) * playerKart.speed;
+            playerKart.y += Math.sin(playerKart.angle) * playerKart.speed;
+            playerKart.speed *= 0.98;
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "green";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "gray";
+            ctx.fillRect(50, 50, 700, 500);
+            ctx.fillStyle = playerKart.color;
+            ctx.fillRect(playerKart.x, playerKart.y, playerKart.width, playerKart.height);
+            enemies.forEach(enemy => {
+                ctx.fillStyle = enemy.color;
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            });
+            bonuses.forEach(bonus => {
+                ctx.fillStyle = bonus.color;
+                ctx.fillRect(bonus.x, bonus.y, bonus.width, bonus.height);
             });
         }
 
-        function drawBonuses() {
-            ctx.fillStyle = "gold";
-            bonuses.forEach(bonus => ctx.fillRect(bonus.x, bonus.y, bonus.width, bonus.height));
-        }
-
-        function drawMaluses() {
-            ctx.fillStyle = "red";
-            maluses.forEach(malus => ctx.fillRect(malus.x, malus.y, malus.width, malus.height));
-        }
-
-        function updatePlayer() {
-            if (keys.ArrowLeft && player.x > 0) player.x -= player.speed;
-            if (keys.ArrowRight && player.x < canvas.width - player.width) player.x += player.speed;
-        }
-
         function gameLoop() {
-            if (!gameRunning) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            updatePlayer();
-            drawPlayer();
-            drawOpponents();
-            drawBonuses();
-            drawMaluses();
-            requestAnimationFrame(gameLoop);
+            if (gameRunning) {
+                updateGame();
+                drawGame();
+                requestAnimationFrame(gameLoop);
+            }
         }
 
-        let keys = {};
+        const keys = {};
         window.addEventListener("keydown", e => keys[e.key] = true);
         window.addEventListener("keyup", e => keys[e.key] = false);
     </script>
