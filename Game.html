@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Platformer</title>
+    <title>Jeu de Plateforme - Style Mario</title>
     <style>
         body {
             margin: 0;
@@ -13,8 +13,8 @@
 
         canvas {
             display: block;
-            background: #222;
-            border: 2px solid #fff;
+            background: #5c94fc;
+            border-bottom: 2px solid #3b5998;
         }
     </style>
 </head>
@@ -26,162 +26,162 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Joueur
-        const player = {
-            x: 100,
-            y: 400,
-            width: 40,
-            height: 40,
-            color: "blue",
-            speedX: 0,
-            speedY: 0,
-            grounded: false,
-            lives: 3,
-            score: 0,
-        };
+        const gravity = 0.5;
+        let level = 0;
 
-        // Défilement du monde
-        let scrollOffset = 0;
-        
-        // Niveaux et objets
-        const platforms = [
-            { x: 0, y: 500, width: 800, height: 20 },
-            { x: 900, y: 450, width: 150, height: 20 },
-            { x: 1200, y: 400, width: 200, height: 20 }
-        ];
-
-        const enemies = [
-            { x: 950, y: 420, width: 30, height: 30, speed: 2, direction: 1 }
-        ];
-
-        const bonuses = [
-            { x: 1100, y: 370, width: 20, height: 20, type: "star", collected: false }
-        ];
-
-        const finish = { x: 1400, y: 350, width: 50, height: 100 };
-        
-        const keys = { left: false, right: false, up: false };
-
-        window.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowRight") keys.right = true;
-            if (e.key === "ArrowLeft") keys.left = true;
-            if (e.key === "ArrowUp" && player.grounded) {
-                player.speedY = -15;
-                player.grounded = false;
+        class Player {
+            constructor() {
+                this.width = 40;
+                this.height = 50;
+                this.x = 100;
+                this.y = canvas.height - this.height - 50;
+                this.speedX = 0;
+                this.speedY = 0;
+                this.grounded = false;
+                this.lives = 3;
             }
-        });
 
-        window.addEventListener("keyup", (e) => {
-            if (e.key === "ArrowRight") keys.right = false;
-            if (e.key === "ArrowLeft") keys.left = false;
-        });
+            draw() {
+                ctx.fillStyle = "red";
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
 
-        function detectCollision(rect1, rect2) {
-            return (
-                rect1.x < rect2.x + rect2.width &&
-                rect1.x + rect1.width > rect2.x &&
-                rect1.y < rect2.y + rect2.height &&
-                rect1.y + rect1.height > rect2.y
-            );
+            update() {
+                this.speedY += gravity;
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.y + this.height > canvas.height) {
+                    this.y = canvas.height - this.height;
+                    this.grounded = true;
+                    this.speedY = 0;
+                }
+            }
         }
 
-        function update() {
-            player.speedY += 0.8;
-            player.speedX = 0;
+        class Platform {
+            constructor(x, y, width, height) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+            }
 
-            if (keys.right) player.speedX = 5;
-            if (keys.left) player.speedX = -5;
+            draw() {
+                ctx.fillStyle = "#654321";
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        class Enemy {
+            constructor(x, y, width, height, speed) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+                this.speed = speed;
+                this.direction = 1;
+            }
+
+            update() {
+                this.x += this.speed * this.direction;
+                if (this.x <= 0 || this.x + this.width >= canvas.width) {
+                    this.direction *= -1;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = "purple";
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        class Goal {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.width = 40;
+                this.height = 60;
+            }
+
+            draw() {
+                ctx.fillStyle = "yellow";
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        let player = new Player();
+        let platforms = [];
+        let enemies = [];
+        let goal;
+
+        function loadLevel(lvl) {
+            platforms = [];
+            enemies = [];
+            goal = new Goal(canvas.width - 100, canvas.height - 80);
             
-            player.x += player.speedX;
-            player.y += player.speedY;
-            
-            if (player.y > canvas.height) {
-                player.lives--;
-                if (player.lives <= 0) {
-                    alert("Game Over!");
-                    location.reload();
-                } else {
-                    player.x = 100;
-                    player.y = 400;
+            let platformCount = 5 + lvl;
+            for (let i = 0; i < platformCount; i++) {
+                let x = Math.random() * (canvas.width - 200);
+                let y = Math.random() * (canvas.height - 150);
+                platforms.push(new Platform(x, y, 120, 10));
+            }
+
+            let enemyCount = Math.min(3 + lvl, 10);
+            for (let i = 0; i < enemyCount; i++) {
+                let x = Math.random() * (canvas.width - 50);
+                let y = Math.random() * (canvas.height - 150);
+                enemies.push(new Enemy(x, y, 30, 30, 2 + lvl * 0.5));
+            }
+        }
+
+        loadLevel(level);
+
+        function update() {
+            player.update();
+
+            platforms.forEach(platform => {
+                if (
+                    player.y + player.height > platform.y &&
+                    player.y + player.height < platform.y + platform.height &&
+                    player.x + player.width > platform.x &&
+                    player.x < platform.x + platform.width
+                ) {
+                    player.grounded = true;
+                    player.y = platform.y - player.height;
                     player.speedY = 0;
                 }
-            }
-
-            player.grounded = false;
-            platforms.forEach((platform) => {
-                if (detectCollision(player, platform)) {
-                    if (player.speedY > 0) {
-                        player.grounded = true;
-                        player.speedY = 0;
-                        player.y = platform.y - player.height;
-                    }
-                }
             });
 
-            bonuses.forEach((bonus) => {
-                if (!bonus.collected && detectCollision(player, bonus)) {
-                    bonus.collected = true;
-                    player.score += 10;
-                }
-            });
+            enemies.forEach(enemy => enemy.update());
 
-            enemies.forEach((enemy) => {
-                enemy.x += enemy.speed * enemy.direction;
-                if (enemy.x <= 900 || enemy.x + enemy.width >= 1100) {
-                    enemy.direction *= -1;
+            if (
+                player.x + player.width > goal.x &&
+                player.x < goal.x + goal.width &&
+                player.y + player.height > goal.y
+            ) {
+                level++;
+                if (level >= 10) {
+                    alert("Bravo! Vous avez terminé le jeu!");
+                    level = 0;
                 }
-                if (detectCollision(player, enemy)) {
-                    player.lives--;
-                    if (player.lives <= 0) {
-                        alert("Game Over!");
-                        location.reload();
-                    } else {
-                        player.x = 100;
-                        player.y = 400;
-                        player.speedY = 0;
-                    }
-                }
-            });
-            
-            if (detectCollision(player, finish)) {
-                alert("Niveau terminé !");
-                location.reload();
-            }
-            
-            if (player.x > canvas.width / 2) {
-                scrollOffset = player.x - canvas.width / 2;
+                loadLevel(level);
+                player.x = 100;
+                player.y = canvas.height - player.height - 50;
             }
         }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "blue";
-            ctx.fillRect(player.x - scrollOffset, player.y, player.width, player.height);
+            player.draw();
+            platforms.forEach(platform => platform.draw());
+            enemies.forEach(enemy => enemy.draw());
+            goal.draw();
             
-            ctx.fillStyle = "green";
-            platforms.forEach((platform) => {
-                ctx.fillRect(platform.x - scrollOffset, platform.y, platform.width, platform.height);
-            });
-            
-            ctx.fillStyle = "yellow";
-            bonuses.forEach((bonus) => {
-                if (!bonus.collected) {
-                    ctx.fillRect(bonus.x - scrollOffset, bonus.y, bonus.width, bonus.height);
-                }
-            });
-            
-            ctx.fillStyle = "red";
-            enemies.forEach((enemy) => {
-                ctx.fillRect(enemy.x - scrollOffset, enemy.y, enemy.width, enemy.height);
-            });
-            
-            ctx.fillStyle = "white";
-            ctx.fillRect(finish.x - scrollOffset, finish.y, finish.width, finish.height);
-            
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "black";
             ctx.font = "20px Arial";
-            ctx.fillText("Vies : " + player.lives, 10, 30);
-            ctx.fillText("Score : " + player.score, 10, 60);
+            ctx.fillText("Vies: " + player.lives, 20, 30);
+            ctx.fillText("Niveau: " + (level + 1), 20, 60);
         }
 
         function gameLoop() {
@@ -189,7 +189,21 @@
             draw();
             requestAnimationFrame(gameLoop);
         }
+
         gameLoop();
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight") player.speedX = 5;
+            if (e.key === "ArrowLeft") player.speedX = -5;
+            if (e.key === "ArrowUp" && player.grounded) {
+                player.speedY = -12;
+                player.grounded = false;
+            }
+        });
+
+        document.addEventListener("keyup", (e) => {
+            if (e.key === "ArrowRight" || e.key === "ArrowLeft") player.speedX = 0;
+        });
     </script>
 </body>
 </html>
