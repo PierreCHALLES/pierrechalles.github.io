@@ -3,61 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Platformer</title>
+    <title>Mario-Like Platformer</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
             background-color: #87CEEB;
         }
+
         canvas {
             display: block;
-            background: #5c94fc;
-            border-bottom: 5px solid #2d5d9f;
+            background: #222;
+            border: 2px solid #fff;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <canvas id="gameCanvas"></canvas>
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        let player = {
-            x: 50,
-            y: 300,
-            width: 30,
-            height: 30,
-            color: "#ffcc00",
+        const gravity = 0.6;
+        const player = {
+            x: 100,
+            y: 500,
+            width: 40,
+            height: 50,
+            color: "blue",
             speedX: 0,
             speedY: 0,
-            grounded: false
+            grounded: false,
+            lives: 3,
+            score: 0
         };
 
-        let levels = Array.from({ length: 20 }, (_, i) => ({
-            platforms: [
-                { x: 0, y: 380, width: 800, height: 20, color: "#654321" },
-                { x: 200 + i * 50, y: 300 - i * 10, width: 100, height: 10, color: "#3e8e41" },
-                { x: 400 + i * 50, y: 250 - i * 5, width: 100, height: 10, color: "#3e8e41" }
-            ],
-            enemies: [
-                { x: 300 + i * 30, y: 350, width: 30, height: 30, color: "red", speed: 2, direction: 1 }
-            ],
-            bonuses: [
-                { x: 600 + i * 20, y: 200 - i * 5, width: 20, height: 20, color: "yellow" }
-            ]
+        let cameraOffset = 0;
+
+        const levels = [...Array(20)].map((_, i) => ({
+            platforms: Array.from({ length: 10 }, () => ({
+                x: Math.random() * 2000,
+                y: Math.random() * canvas.height * 0.6 + 300,
+                width: 150,
+                height: 20,
+                color: "#555"
+            })),
+            enemies: [{ x: 500 + i * 500, y: 550, width: 40, height: 40, speed: 2, direction: 1 }],
+            bonuses: [{ x: 800 + i * 600, y: 450, width: 30, height: 30, collected: false }]
         }));
 
         let currentLevel = 0;
-        let keys = { left: false, right: false, up: false };
-        const gravity = 0.8;
-        const friction = 0.9;
 
+        const keys = { left: false, right: false, up: false };
         window.addEventListener("keydown", (e) => {
             if (e.key === "ArrowRight") keys.right = true;
             if (e.key === "ArrowLeft") keys.left = true;
             if (e.key === "ArrowUp" && player.grounded) {
-                player.speedY = -15;
+                player.speedY = -12;
                 player.grounded = false;
             }
         });
@@ -67,22 +71,19 @@
             if (e.key === "ArrowLeft") keys.left = false;
         });
 
-        function detectCollision(rect1, rect2) {
-            return rect1.x < rect2.x + rect2.width &&
-                   rect1.x + rect1.width > rect2.x &&
-                   rect1.y < rect2.y + rect2.height &&
-                   rect1.y + rect1.height > rect2.y;
+        function detectCollision(a, b) {
+            return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
         }
 
         function update() {
             player.speedY += gravity;
-            if (player.grounded) player.speedX *= friction;
-            if (keys.right) player.speedX = 5;
-            if (keys.left) player.speedX = -5;
-
+            player.speedX = keys.right ? 5 : keys.left ? -5 : 0;
             player.x += player.speedX;
             player.y += player.speedY;
 
+            cameraOffset = player.x - canvas.width / 4;
+            if (player.x < 0) player.x = 0;
+            
             player.grounded = false;
             levels[currentLevel].platforms.forEach(platform => {
                 if (detectCollision(player, platform) && player.speedY > 0) {
@@ -94,47 +95,65 @@
 
             levels[currentLevel].enemies.forEach(enemy => {
                 enemy.x += enemy.speed * enemy.direction;
-                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) enemy.direction *= -1;
-                if (detectCollision(player, enemy)) resetPlayer();
-            });
-
-            levels[currentLevel].bonuses.forEach((bonus, index) => {
-                if (detectCollision(player, bonus)) {
-                    levels[currentLevel].bonuses.splice(index, 1);
-                    if (levels[currentLevel].bonuses.length === 0) {
-                        currentLevel = (currentLevel + 1) % levels.length;
-                        resetPlayer();
+                if (enemy.x < cameraOffset || enemy.x + enemy.width > cameraOffset + canvas.width) {
+                    enemy.direction *= -1;
+                }
+                if (detectCollision(player, enemy)) {
+                    player.lives--;
+                    if (player.lives <= 0) {
+                        alert("Game Over!");
+                        location.reload();
                     }
+                    resetPlayer();
                 }
             });
 
-            if (player.y > canvas.height) resetPlayer();
+            levels[currentLevel].bonuses.forEach(bonus => {
+                if (!bonus.collected && detectCollision(player, bonus)) {
+                    bonus.collected = true;
+                    player.score += 100;
+                }
+            });
+
+            if (player.x > 2000) {
+                currentLevel = (currentLevel + 1) % levels.length;
+                resetPlayer();
+            }
         }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#87CEEB";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
             ctx.fillStyle = player.color;
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-
+            ctx.fillRect(player.x - cameraOffset, player.y, player.width, player.height);
+            
             levels[currentLevel].platforms.forEach(platform => {
                 ctx.fillStyle = platform.color;
-                ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+                ctx.fillRect(platform.x - cameraOffset, platform.y, platform.width, platform.height);
             });
-
-            levels[currentLevel].bonuses.forEach(bonus => {
-                ctx.fillStyle = bonus.color;
-                ctx.fillRect(bonus.x, bonus.y, bonus.width, bonus.height);
-            });
-
+            
             levels[currentLevel].enemies.forEach(enemy => {
-                ctx.fillStyle = enemy.color;
-                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                ctx.fillStyle = "red";
+                ctx.fillRect(enemy.x - cameraOffset, enemy.y, enemy.width, enemy.height);
             });
+            
+            levels[currentLevel].bonuses.forEach(bonus => {
+                if (!bonus.collected) {
+                    ctx.fillStyle = "gold";
+                    ctx.fillRect(bonus.x - cameraOffset, bonus.y, bonus.width, bonus.height);
+                }
+            });
+            
+            ctx.fillStyle = "white";
+            ctx.font = "20px Arial";
+            ctx.fillText(`Score: ${player.score} | Lives: ${player.lives}`, 20, 30);
         }
 
         function resetPlayer() {
-            player.x = 50;
-            player.y = 300;
+            player.x = 100;
+            player.y = 500;
             player.speedX = 0;
             player.speedY = 0;
         }
