@@ -65,10 +65,10 @@
         let keys = { right: false, left: false, up: false };
         
         const platforms = [];
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 50; i++) {
             platforms.push({
                 x: i * 300,
-                y: canvas.height - 100 - (Math.random() * 100),
+                y: canvas.height - 100 - (Math.random() * 200),
                 width: 200,
                 height: 20,
                 color: "#555"
@@ -76,10 +76,11 @@
         }
         
         const enemies = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 15; i++) {
+            let platform = platforms[Math.floor(Math.random() * platforms.length)];
             enemies.push({
-                x: i * 500 + 300,
-                y: canvas.height - 60,
+                x: platform.x + platform.width / 2,
+                y: platform.y - 40,
                 width: 40,
                 height: 40,
                 color: "#ff5555",
@@ -121,7 +122,7 @@
             
             enemies.forEach(enemy => {
                 enemy.x += enemy.speed * enemy.direction;
-                if (enemy.x <= scrollOffset || enemy.x + enemy.width >= scrollOffset + canvas.width) {
+                if (enemy.x <= enemy.x - 50 || enemy.x + enemy.width >= enemy.x + 50) {
                     enemy.direction *= -1;
                 }
                 if (detectCollision(player, enemy)) {
@@ -135,6 +136,10 @@
                     }
                 }
             });
+
+            if (player.x < scrollOffset) {
+                player.x = scrollOffset;
+            }
         }
         
         function draw() {
