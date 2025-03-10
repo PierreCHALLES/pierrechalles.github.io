@@ -3,207 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Plateforme - Style Mario</title>
+    <title>Tetris Stylé</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #87CEEB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1e1e;
+            color: white;
+            font-family: Arial, sans-serif;
         }
-
         canvas {
-            display: block;
-            background: #5c94fc;
-            border-bottom: 2px solid #3b5998;
+            background-color: black;
+            border: 4px solid white;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
+    <canvas id="tetris" width="300" height="600"></canvas>
     <script>
-        const canvas = document.getElementById("gameCanvas");
+        const canvas = document.getElementById("tetris");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const gravity = 0.5;
-        let level = 0;
-
-        class Player {
-            constructor() {
-                this.width = 40;
-                this.height = 50;
-                this.x = 100;
-                this.y = canvas.height - this.height - 50;
-                this.speedX = 0;
-                this.speedY = 0;
-                this.grounded = false;
-                this.lives = 3;
-            }
-
-            draw() {
-                ctx.fillStyle = "red";
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-            }
-
-            update() {
-                this.speedY += gravity;
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.y + this.height > canvas.height) {
-                    this.y = canvas.height - this.height;
-                    this.grounded = true;
-                    this.speedY = 0;
-                }
-            }
-        }
-
-        class Platform {
-            constructor(x, y, width, height) {
-                this.x = x;
-                this.y = y;
-                this.width = width;
-                this.height = height;
-            }
-
-            draw() {
-                ctx.fillStyle = "#654321";
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-            }
-        }
-
-        class Enemy {
-            constructor(x, y, width, height, speed) {
-                this.x = x;
-                this.y = y;
-                this.width = width;
-                this.height = height;
-                this.speed = speed;
-                this.direction = 1;
-            }
-
-            update() {
-                this.x += this.speed * this.direction;
-                if (this.x <= 0 || this.x + this.width >= canvas.width) {
-                    this.direction *= -1;
-                }
-            }
-
-            draw() {
-                ctx.fillStyle = "purple";
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-            }
-        }
-
-        class Goal {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.width = 40;
-                this.height = 60;
-            }
-
-            draw() {
-                ctx.fillStyle = "yellow";
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-            }
-        }
-
-        let player = new Player();
-        let platforms = [];
-        let enemies = [];
-        let goal;
-
-        function loadLevel(lvl) {
-            platforms = [];
-            enemies = [];
-            goal = new Goal(canvas.width - 100, canvas.height - 80);
+        const ROWS = 20, COLS = 10, SIZE = 30;
+        const board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+        const colors = ["#000", "#ff0", "#0ff", "#f00", "#0f0", "#00f", "#f0f", "#ff8800"];
+        
+        const tetrominoes = [
+            [[1, 1, 1, 1]],
+            [[1, 1], [1, 1]],
+            [[0, 1, 0], [1, 1, 1]],
+            [[1, 1, 0], [0, 1, 1]],
+            [[0, 1, 1], [1, 1, 0]],
+            [[1, 1, 1], [0, 0, 1]],
+            [[1, 1, 1], [1, 0, 0]]
+        ];
+        
+        let currentPiece = { shape: [], color: 0, x: 4, y: 0 };
+        let dropCounter = 0, lastTime = 0;
+        
+        function drawBoard() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            let platformCount = 5 + lvl;
-            for (let i = 0; i < platformCount; i++) {
-                let x = Math.random() * (canvas.width - 200);
-                let y = Math.random() * (canvas.height - 150);
-                platforms.push(new Platform(x, y, 120, 10));
-            }
-
-            let enemyCount = Math.min(3 + lvl, 10);
-            for (let i = 0; i < enemyCount; i++) {
-                let x = Math.random() * (canvas.width - 50);
-                let y = Math.random() * (canvas.height - 150);
-                enemies.push(new Enemy(x, y, 30, 30, 2 + lvl * 0.5));
-            }
+            board.forEach((row, y) => row.forEach((value, x) => {
+                if (value) {
+                    ctx.fillStyle = colors[value];
+                    ctx.fillRect(x * SIZE, y * SIZE, SIZE, SIZE);
+                }
+            }));
         }
-
-        loadLevel(level);
-
-        function update() {
-            player.update();
-
-            platforms.forEach(platform => {
-                if (
-                    player.y + player.height > platform.y &&
-                    player.y + player.height < platform.y + platform.height &&
-                    player.x + player.width > platform.x &&
-                    player.x < platform.x + platform.width
-                ) {
-                    player.grounded = true;
-                    player.y = platform.y - player.height;
-                    player.speedY = 0;
+        
+        function drawPiece(piece) {
+            piece.shape.forEach((row, y) => row.forEach((value, x) => {
+                if (value) {
+                    ctx.fillStyle = colors[piece.color];
+                    ctx.fillRect((piece.x + x) * SIZE, (piece.y + y) * SIZE, SIZE, SIZE);
+                }
+            }));
+        }
+        
+        function collide() {
+            return currentPiece.shape.some((row, y) => row.some((value, x) => {
+                return value && (board[currentPiece.y + y]?.[currentPiece.x + x] !== 0);
+            }));
+        }
+        
+        function merge() {
+            currentPiece.shape.forEach((row, y) => row.forEach((value, x) => {
+                if (value) board[currentPiece.y + y][currentPiece.x + x] = currentPiece.color;
+            }));
+        }
+        
+        function removeLines() {
+            board.forEach((row, y) => {
+                if (row.every(value => value)) {
+                    board.splice(y, 1);
+                    board.unshift(Array(COLS).fill(0));
                 }
             });
-
-            enemies.forEach(enemy => enemy.update());
-
-            if (
-                player.x + player.width > goal.x &&
-                player.x < goal.x + goal.width &&
-                player.y + player.height > goal.y
-            ) {
-                level++;
-                if (level >= 10) {
-                    alert("Bravo! Vous avez terminé le jeu!");
-                    level = 0;
-                }
-                loadLevel(level);
-                player.x = 100;
-                player.y = canvas.height - player.height - 50;
+        }
+        
+        function drop() {
+            currentPiece.y++;
+            if (collide()) {
+                currentPiece.y--;
+                merge();
+                removeLines();
+                spawnPiece();
             }
         }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            player.draw();
-            platforms.forEach(platform => platform.draw());
-            enemies.forEach(enemy => enemy.draw());
-            goal.draw();
-            
-            ctx.fillStyle = "black";
-            ctx.font = "20px Arial";
-            ctx.fillText("Vies: " + player.lives, 20, 30);
-            ctx.fillText("Niveau: " + (level + 1), 20, 60);
-        }
-
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        gameLoop();
-
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowRight") player.speedX = 5;
-            if (e.key === "ArrowLeft") player.speedX = -5;
-            if (e.key === "ArrowUp" && player.grounded) {
-                player.speedY = -12;
-                player.grounded = false;
+        
+        function spawnPiece() {
+            const index = Math.floor(Math.random() * tetrominoes.length);
+            currentPiece.shape = tetrominoes[index];
+            currentPiece.color = index + 1;
+            currentPiece.x = 4;
+            currentPiece.y = 0;
+            if (collide()) {
+                board.forEach(row => row.fill(0));
             }
+        }
+        
+        function move(dir) {
+            currentPiece.x += dir;
+            if (collide()) currentPiece.x -= dir;
+        }
+        
+        function rotate() {
+            const oldShape = currentPiece.shape;
+            currentPiece.shape = currentPiece.shape[0].map((_, i) => currentPiece.shape.map(row => row[i])).reverse();
+            if (collide()) currentPiece.shape = oldShape;
+        }
+        
+        function update(time = 0) {
+            const deltaTime = time - lastTime;
+            lastTime = time;
+            dropCounter += deltaTime;
+            if (dropCounter > 500) {
+                drop();
+                dropCounter = 0;
+            }
+            drawBoard();
+            drawPiece(currentPiece);
+            requestAnimationFrame(update);
+        }
+        
+        document.addEventListener("keydown", event => {
+            if (event.key === "ArrowLeft") move(-1);
+            if (event.key === "ArrowRight") move(1);
+            if (event.key === "ArrowDown") drop();
+            if (event.key === "ArrowUp") rotate();
         });
-
-        document.addEventListener("keyup", (e) => {
-            if (e.key === "ArrowRight" || e.key === "ArrowLeft") player.speedX = 0;
-        });
+        
+        spawnPiece();
+        update();
     </script>
 </body>
 </html>
