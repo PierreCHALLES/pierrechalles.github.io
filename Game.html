@@ -3,85 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kart Racing 2D</title>
+    <title>Kart Racing Game</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #87CEEB;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
-
         canvas {
             display: block;
-            background: #7cfc00;
-            width: 100vw;
-            height: 100vh;
+            margin: auto;
+            background: #87CEEB;
+        }
+        .menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .menu button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
+    <div id="menu" class="menu">
+        <h1>Choisissez votre circuit</h1>
+        <select id="trackSelect">
+            <option value="1">Circuit 1</option>
+            <option value="2">Circuit 2</option>
+            <option value="3">Circuit 3</option>
+        </select>
+        <h1>Choisissez votre couleur de kart</h1>
+        <input type="color" id="kartColor" value="#ff0000">
+        <button onclick="startGame()">Démarrer</button>
+    </div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        let canvas = document.getElementById("gameCanvas");
+        let ctx = canvas.getContext("2d");
+        let gameRunning = false;
+        let track = 1;
+        let kartColor = "#ff0000";
+        let player = { x: 400, y: 500, width: 40, height: 60, speed: 5 };
+        let opponents = [{ x: 300, y: 200, width: 40, height: 60, speed: 3 }, { x: 500, y: 100, width: 40, height: 60, speed: 4 }];
+        let bonuses = [{ x: 350, y: 300, width: 20, height: 20 }];
+        let maluses = [{ x: 450, y: 400, width: 20, height: 20 }];
 
-        class Kart {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.width = 40;
-                this.height = 60;
-                this.color = color;
-                this.speed = 0;
-                this.angle = 0;
-                this.acceleration = 0.1;
-                this.maxSpeed = 5;
-                this.friction = 0.05;
-            }
-
-            move() {
-                if (keys.ArrowUp) {
-                    this.speed += this.acceleration;
-                    if (this.speed > this.maxSpeed) this.speed = this.maxSpeed;
-                }
-                if (keys.ArrowDown) {
-                    this.speed -= this.acceleration;
-                    if (this.speed < -this.maxSpeed / 2) this.speed = -this.maxSpeed / 2;
-                }
-                if (keys.ArrowLeft) this.angle -= 0.05;
-                if (keys.ArrowRight) this.angle += 0.05;
-
-                this.speed *= (1 - this.friction);
-                this.x += Math.sin(this.angle) * this.speed;
-                this.y -= Math.cos(this.angle) * this.speed;
-            }
-
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-                ctx.fillStyle = this.color;
-                ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
-                ctx.restore();
-            }
+        function startGame() {
+            document.getElementById("menu").style.display = "none";
+            gameRunning = true;
+            track = document.getElementById("trackSelect").value;
+            kartColor = document.getElementById("kartColor").value;
+            gameLoop();
         }
 
-        const kart = new Kart(canvas.width / 2, canvas.height - 100, "red");
-        const keys = {};
+        function drawPlayer() {
+            ctx.fillStyle = kartColor;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
 
-        window.addEventListener('keydown', (e) => keys[e.key] = true);
-        window.addEventListener('keyup', (e) => keys[e.key] = false);
+        function drawOpponents() {
+            ctx.fillStyle = "blue";
+            opponents.forEach(opponent => {
+                ctx.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
+                opponent.y += opponent.speed;
+                if (opponent.y > canvas.height) opponent.y = -60;
+            });
+        }
+
+        function drawBonuses() {
+            ctx.fillStyle = "gold";
+            bonuses.forEach(bonus => ctx.fillRect(bonus.x, bonus.y, bonus.width, bonus.height));
+        }
+
+        function drawMaluses() {
+            ctx.fillStyle = "red";
+            maluses.forEach(malus => ctx.fillRect(malus.x, malus.y, malus.width, malus.height));
+        }
+
+        function updatePlayer() {
+            if (keys.ArrowLeft && player.x > 0) player.x -= player.speed;
+            if (keys.ArrowRight && player.x < canvas.width - player.width) player.x += player.speed;
+        }
 
         function gameLoop() {
+            if (!gameRunning) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            kart.move();
-            kart.draw();
+            updatePlayer();
+            drawPlayer();
+            drawOpponents();
+            drawBonuses();
+            drawMaluses();
             requestAnimationFrame(gameLoop);
         }
 
-        gameLoop();
+        let keys = {};
+        window.addEventListener("keydown", e => keys[e.key] = true);
+        window.addEventListener("keyup", e => keys[e.key] = false);
     </script>
 </body>
 </html>
