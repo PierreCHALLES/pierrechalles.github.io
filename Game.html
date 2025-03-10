@@ -17,91 +17,44 @@
             background: #222;
             border: 2px solid #fff;
         }
-
-        .back-link {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background-color: #fff;
-            color: #000;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            background-color: #ddd;
-        }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">Retour au portfolio</a>
     <canvas id="platformer" width="800" height="400"></canvas>
-
     <script>
         const canvas = document.getElementById('platformer');
         const ctx = canvas.getContext('2d');
-
-        // Dimensions du jeu
+        
         const gravity = 0.8;
         const friction = 0.9;
 
-        // Joueur
         const player = {
-            x: 50,
-            y: 300,
-            width: 30,
-            height: 30,
-            color: "#29b6f6",
-            speedX: 0,
-            speedY: 0,
-            grounded: false,
-            score: 0
+            x: 50, y: 300, width: 30, height: 30,
+            color: "#29b6f6", speedX: 0, speedY: 0,
+            grounded: false, score: 0, invincible: false
         };
 
-        // Niveau actuel
         let currentLevel = 0;
-
-        // Niveaux
         const levels = [
             {
                 platforms: [
                     { x: 0, y: 380, width: 800, height: 20, color: "#444" },
-                    { x: 150, y: 300, width: 120, height: 10, color: "#555" },
-                    { x: 400, y: 250, width: 100, height: 10, color: "#666" },
-                    { x: 600, y: 200, width: 150, height: 10, color: "#777" }
+                    { x: 200, y: 300, width: 100, height: 10, color: "#555" },
+                    { x: 450, y: 250, width: 120, height: 10, color: "#666" }
                 ],
                 enemies: [
                     { x: 300, y: 355, width: 30, height: 30, color: "#ff5555", speed: 2, direction: 1 }
                 ],
-                stars: [
-                    { x: 650, y: 170, width: 20, height: 20, color: "#ffcc00", collected: false }
-                ]
-            },
-            {
-                platforms: [
-                    { x: 0, y: 380, width: 800, height: 20, color: "#444" },
-                    { x: 100, y: 300, width: 120, height: 10, color: "#555" },
-                    { x: 350, y: 250, width: 100, height: 10, color: "#666" },
-                    { x: 500, y: 200, width: 150, height: 10, color: "#777" },
-                    { x: 700, y: 150, width: 100, height: 10, color: "#888" }
+                spikes: [
+                    { x: 600, y: 370, width: 40, height: 10, color: "#ff0000" }
                 ],
-                enemies: [
-                    { x: 400, y: 225, width: 30, height: 30, color: "#ff5555", speed: 3, direction: -1 }
-                ],
-                stars: [
-                    { x: 750, y: 120, width: 20, height: 20, color: "#ffcc00", collected: false }
+                powerUps: [
+                    { x: 500, y: 220, width: 20, height: 20, color: "#00ff00", active: true }
                 ]
             }
         ];
 
-        // Contrôles
-        const keys = {
-            right: false,
-            left: false,
-            up: false
-        };
+        const keys = { right: false, left: false, up: false };
 
         window.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') keys.right = true;
@@ -125,30 +78,17 @@
         }
 
         function update() {
-            // Appliquer la gravité
             player.speedY += gravity;
-
-            // Appliquer le frottement
-            if (player.grounded) {
-                player.speedX *= friction;
-            }
-
-            // Mouvement horizontal
+            if (player.grounded) player.speedX *= friction;
             if (keys.right) player.speedX = 5;
             if (keys.left) player.speedX = -5;
 
             player.x += player.speedX;
             player.y += player.speedY;
-
-            // Empêcher de sortir des bords
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-
-            // Gérer les collisions avec les plateformes
+            
             player.grounded = false;
             levels[currentLevel].platforms.forEach(platform => {
                 if (detectCollision(player, platform)) {
-                    // Collision par le bas (sol)
                     if (player.speedY > 0 && player.y + player.height <= platform.y + player.speedY) {
                         player.grounded = true;
                         player.speedY = 0;
@@ -157,80 +97,57 @@
                 }
             });
 
-            // Vérifier les collisions avec les étoiles
-            levels[currentLevel].stars.forEach(star => {
-                if (!star.collected && detectCollision(player, star)) {
-                    star.collected = true;
-                    player.score += 1;
-
-                    // Passer au niveau suivant si toutes les étoiles sont collectées
-                    if (levels[currentLevel].stars.every(s => s.collected)) {
-                        currentLevel += 1;
-                        if (currentLevel >= levels.length) {
-                            alert("Bravo ! Vous avez terminé le jeu !");
-                            currentLevel = 0;
-                            player.score = 0;
-                        }
-                        resetPlayer();
-                    }
-                }
-            });
-
-            // Gérer les ennemis
             levels[currentLevel].enemies.forEach(enemy => {
                 enemy.x += enemy.speed * enemy.direction;
-
-                // Changer de direction si l'ennemi atteint un bord
-                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
-                    enemy.direction *= -1;
-                }
-
-                // Vérifier collision avec le joueur
-                if (detectCollision(player, enemy)) {
+                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) enemy.direction *= -1;
+                if (!player.invincible && detectCollision(player, enemy)) {
                     alert("Oh non ! Vous avez été touché !");
                     resetPlayer();
                 }
             });
 
-            // Si le joueur tombe sous l'écran
-            if (player.y > canvas.height) {
-                alert("Vous êtes tombé !");
-                resetPlayer();
-            }
+            levels[currentLevel].spikes.forEach(spike => {
+                if (!player.invincible && detectCollision(player, spike)) {
+                    alert("Vous êtes mort!");
+                    resetPlayer();
+                }
+            });
+
+            levels[currentLevel].powerUps.forEach(powerUp => {
+                if (powerUp.active && detectCollision(player, powerUp)) {
+                    player.invincible = true;
+                    powerUp.active = false;
+                    setTimeout(() => player.invincible = false, 5000);
+                }
+            });
         }
 
         function draw() {
-            // Effacer le canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Dessiner le joueur
-            ctx.fillStyle = player.color;
+            ctx.fillStyle = player.invincible ? "yellow" : player.color;
             ctx.fillRect(player.x, player.y, player.width, player.height);
 
-            // Dessiner les plateformes
             levels[currentLevel].platforms.forEach(platform => {
                 ctx.fillStyle = platform.color;
                 ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
             });
 
-            // Dessiner les étoiles
-            levels[currentLevel].stars.forEach(star => {
-                if (!star.collected) {
-                    ctx.fillStyle = star.color;
-                    ctx.fillRect(star.x, star.y, star.width, star.height);
-                }
-            });
-
-            // Dessiner les ennemis
             levels[currentLevel].enemies.forEach(enemy => {
                 ctx.fillStyle = enemy.color;
                 ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
             });
 
-            // Afficher le score
-            ctx.fillStyle = "#fff";
-            ctx.font = "20px Arial";
-            ctx.fillText("Score : " + player.score, 10, 30);
+            levels[currentLevel].spikes.forEach(spike => {
+                ctx.fillStyle = spike.color;
+                ctx.fillRect(spike.x, spike.y, spike.width, spike.height);
+            });
+
+            levels[currentLevel].powerUps.forEach(powerUp => {
+                if (powerUp.active) {
+                    ctx.fillStyle = powerUp.color;
+                    ctx.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
+                }
+            });
         }
 
         function resetPlayer() {
@@ -238,6 +155,7 @@
             player.y = 300;
             player.speedX = 0;
             player.speedY = 0;
+            player.invincible = false;
         }
 
         function gameLoop() {
