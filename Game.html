@@ -3,141 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tetris Stylé</title>
+    <title>Kart Racing 2D</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #1e1e1e;
-            color: white;
-            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background-color: #87CEEB;
         }
+
         canvas {
-            background-color: black;
-            border: 4px solid white;
+            display: block;
+            background: #7cfc00;
+            width: 100vw;
+            height: 100vh;
         }
     </style>
 </head>
 <body>
-    <canvas id="tetris" width="300" height="600"></canvas>
+    <canvas id="gameCanvas"></canvas>
     <script>
-        const canvas = document.getElementById("tetris");
-        const ctx = canvas.getContext("2d");
-        const ROWS = 20, COLS = 10, SIZE = 30;
-        const board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
-        const colors = ["#000", "#ff0", "#0ff", "#f00", "#0f0", "#00f", "#f0f", "#ff8800"];
-        
-        const tetrominoes = [
-            [[1, 1, 1, 1]],
-            [[1, 1], [1, 1]],
-            [[0, 1, 0], [1, 1, 1]],
-            [[1, 1, 0], [0, 1, 1]],
-            [[0, 1, 1], [1, 1, 0]],
-            [[1, 1, 1], [0, 0, 1]],
-            [[1, 1, 1], [1, 0, 0]]
-        ];
-        
-        let currentPiece = { shape: [], color: 0, x: 4, y: 0 };
-        let dropCounter = 0, lastTime = 0;
-        
-        function drawBoard() {
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            board.forEach((row, y) => row.forEach((value, x) => {
-                if (value) {
-                    ctx.fillStyle = colors[value];
-                    ctx.fillRect(x * SIZE, y * SIZE, SIZE, SIZE);
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Kart {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.width = 40;
+                this.height = 60;
+                this.color = color;
+                this.speed = 0;
+                this.angle = 0;
+                this.acceleration = 0.1;
+                this.maxSpeed = 5;
+                this.friction = 0.05;
+            }
+
+            move() {
+                if (keys.ArrowUp) {
+                    this.speed += this.acceleration;
+                    if (this.speed > this.maxSpeed) this.speed = this.maxSpeed;
                 }
-            }));
-        }
-        
-        function drawPiece(piece) {
-            piece.shape.forEach((row, y) => row.forEach((value, x) => {
-                if (value) {
-                    ctx.fillStyle = colors[piece.color];
-                    ctx.fillRect((piece.x + x) * SIZE, (piece.y + y) * SIZE, SIZE, SIZE);
+                if (keys.ArrowDown) {
+                    this.speed -= this.acceleration;
+                    if (this.speed < -this.maxSpeed / 2) this.speed = -this.maxSpeed / 2;
                 }
-            }));
-        }
-        
-        function collide() {
-            return currentPiece.shape.some((row, y) => row.some((value, x) => {
-                return value && (board[currentPiece.y + y]?.[currentPiece.x + x] !== 0);
-            }));
-        }
-        
-        function merge() {
-            currentPiece.shape.forEach((row, y) => row.forEach((value, x) => {
-                if (value) board[currentPiece.y + y][currentPiece.x + x] = currentPiece.color;
-            }));
-        }
-        
-        function removeLines() {
-            board.forEach((row, y) => {
-                if (row.every(value => value)) {
-                    board.splice(y, 1);
-                    board.unshift(Array(COLS).fill(0));
-                }
-            });
-        }
-        
-        function drop() {
-            currentPiece.y++;
-            if (collide()) {
-                currentPiece.y--;
-                merge();
-                removeLines();
-                spawnPiece();
+                if (keys.ArrowLeft) this.angle -= 0.05;
+                if (keys.ArrowRight) this.angle += 0.05;
+
+                this.speed *= (1 - this.friction);
+                this.x += Math.sin(this.angle) * this.speed;
+                this.y -= Math.cos(this.angle) * this.speed;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+                ctx.restore();
             }
         }
-        
-        function spawnPiece() {
-            const index = Math.floor(Math.random() * tetrominoes.length);
-            currentPiece.shape = tetrominoes[index];
-            currentPiece.color = index + 1;
-            currentPiece.x = 4;
-            currentPiece.y = 0;
-            if (collide()) {
-                board.forEach(row => row.fill(0));
-            }
+
+        const kart = new Kart(canvas.width / 2, canvas.height - 100, "red");
+        const keys = {};
+
+        window.addEventListener('keydown', (e) => keys[e.key] = true);
+        window.addEventListener('keyup', (e) => keys[e.key] = false);
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            kart.move();
+            kart.draw();
+            requestAnimationFrame(gameLoop);
         }
-        
-        function move(dir) {
-            currentPiece.x += dir;
-            if (collide()) currentPiece.x -= dir;
-        }
-        
-        function rotate() {
-            const oldShape = currentPiece.shape;
-            currentPiece.shape = currentPiece.shape[0].map((_, i) => currentPiece.shape.map(row => row[i])).reverse();
-            if (collide()) currentPiece.shape = oldShape;
-        }
-        
-        function update(time = 0) {
-            const deltaTime = time - lastTime;
-            lastTime = time;
-            dropCounter += deltaTime;
-            if (dropCounter > 500) {
-                drop();
-                dropCounter = 0;
-            }
-            drawBoard();
-            drawPiece(currentPiece);
-            requestAnimationFrame(update);
-        }
-        
-        document.addEventListener("keydown", event => {
-            if (event.key === "ArrowLeft") move(-1);
-            if (event.key === "ArrowRight") move(1);
-            if (event.key === "ArrowDown") drop();
-            if (event.key === "ArrowUp") rotate();
-        });
-        
-        spawnPiece();
-        update();
+
+        gameLoop();
     </script>
 </body>
 </html>
