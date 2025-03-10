@@ -10,91 +10,62 @@
             overflow: hidden;
             background-color: #87CEEB;
         }
-
         canvas {
             display: block;
-            margin: 0 auto;
             background: #5c94fc;
-            border-bottom: 5px solid #3b6cc5;
-        }
-
-        .back-link {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background-color: #fff;
-            color: #000;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            background-color: #ddd;
+            border-bottom: 5px solid #2d5d9f;
         }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">Retour au portfolio</a>
-    <canvas id="platformer" width="800" height="400"></canvas>
-
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
     <script>
-        const canvas = document.getElementById('platformer');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
 
-        // Jeu inspiré de Mario
-        const gravity = 0.8;
-        const friction = 0.9;
-
-        // Joueur
-        const player = {
+        let player = {
             x: 50,
             y: 300,
             width: 30,
-            height: 40,
+            height: 30,
             color: "#ffcc00",
             speedX: 0,
             speedY: 0,
-            grounded: false,
-            score: 0,
-            powerUp: false
+            grounded: false
         };
 
-        let currentLevel = 0;
+        let levels = Array.from({ length: 20 }, (_, i) => ({
+            platforms: [
+                { x: 0, y: 380, width: 800, height: 20, color: "#654321" },
+                { x: 200 + i * 50, y: 300 - i * 10, width: 100, height: 10, color: "#3e8e41" },
+                { x: 400 + i * 50, y: 250 - i * 5, width: 100, height: 10, color: "#3e8e41" }
+            ],
+            enemies: [
+                { x: 300 + i * 30, y: 350, width: 30, height: 30, color: "red", speed: 2, direction: 1 }
+            ],
+            bonuses: [
+                { x: 600 + i * 20, y: 200 - i * 5, width: 20, height: 20, color: "yellow" }
+            ]
+        }));
 
-        // Niveaux
-        const levels = [
-            {
-                platforms: [
-                    { x: 0, y: 380, width: 800, height: 20, color: "#8B4513" },
-                    { x: 150, y: 300, width: 100, height: 10, color: "#32CD32" },
-                    { x: 350, y: 250, width: 100, height: 10, color: "#32CD32" },
-                    { x: 550, y: 200, width: 100, height: 10, color: "#32CD32" }
-                ],
-                enemies: [
-                    { x: 400, y: 355, width: 30, height: 30, color: "#ff0000", speed: 2, direction: 1 }
-                ],
-                bonuses: [
-                    { x: 600, y: 180, width: 20, height: 20, color: "#ffd700", collected: false }
-                ]
-            },
-            {
-                platforms: [
-                    { x: 0, y: 380, width: 800, height: 20, color: "#8B4513" },
-                    { x: 100, y: 300, width: 120, height: 10, color: "#32CD32" },
-                    { x: 350, y: 250, width: 100, height: 10, color: "#32CD32" },
-                    { x: 550, y: 200, width: 100, height: 10, color: "#32CD32" },
-                    { x: 700, y: 150, width: 100, height: 10, color: "#32CD32" }
-                ],
-                enemies: [
-                    { x: 500, y: 355, width: 30, height: 30, color: "#ff0000", speed: 3, direction: -1 }
-                ],
-                bonuses: [
-                    { x: 750, y: 120, width: 20, height: 20, color: "#ffd700", collected: false }
-                ]
+        let currentLevel = 0;
+        let keys = { left: false, right: false, up: false };
+        const gravity = 0.8;
+        const friction = 0.9;
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight") keys.right = true;
+            if (e.key === "ArrowLeft") keys.left = true;
+            if (e.key === "ArrowUp" && player.grounded) {
+                player.speedY = -15;
+                player.grounded = false;
             }
-        ];
+        });
+
+        window.addEventListener("keyup", (e) => {
+            if (e.key === "ArrowRight") keys.right = false;
+            if (e.key === "ArrowLeft") keys.left = false;
+        });
 
         function detectCollision(rect1, rect2) {
             return rect1.x < rect2.x + rect2.width &&
@@ -105,40 +76,39 @@
 
         function update() {
             player.speedY += gravity;
+            if (player.grounded) player.speedX *= friction;
+            if (keys.right) player.speedX = 5;
+            if (keys.left) player.speedX = -5;
+
             player.x += player.speedX;
             player.y += player.speedY;
-            player.grounded = false;
 
+            player.grounded = false;
             levels[currentLevel].platforms.forEach(platform => {
-                if (detectCollision(player, platform)) {
+                if (detectCollision(player, platform) && player.speedY > 0) {
                     player.grounded = true;
                     player.speedY = 0;
                     player.y = platform.y - player.height;
                 }
             });
 
-            levels[currentLevel].bonuses.forEach(bonus => {
-                if (!bonus.collected && detectCollision(player, bonus)) {
-                    bonus.collected = true;
-                    player.score += 100;
-                }
-            });
-
             levels[currentLevel].enemies.forEach(enemy => {
                 enemy.x += enemy.speed * enemy.direction;
-                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
-                    enemy.direction *= -1;
-                }
-                if (detectCollision(player, enemy)) {
-                    alert("Vous avez perdu !");
-                    resetPlayer();
+                if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) enemy.direction *= -1;
+                if (detectCollision(player, enemy)) resetPlayer();
+            });
+
+            levels[currentLevel].bonuses.forEach((bonus, index) => {
+                if (detectCollision(player, bonus)) {
+                    levels[currentLevel].bonuses.splice(index, 1);
+                    if (levels[currentLevel].bonuses.length === 0) {
+                        currentLevel = (currentLevel + 1) % levels.length;
+                        resetPlayer();
+                    }
                 }
             });
 
-            if (player.y > canvas.height) {
-                alert("Vous êtes tombé !");
-                resetPlayer();
-            }
+            if (player.y > canvas.height) resetPlayer();
         }
 
         function draw() {
@@ -152,20 +122,14 @@
             });
 
             levels[currentLevel].bonuses.forEach(bonus => {
-                if (!bonus.collected) {
-                    ctx.fillStyle = bonus.color;
-                    ctx.fillRect(bonus.x, bonus.y, bonus.width, bonus.height);
-                }
+                ctx.fillStyle = bonus.color;
+                ctx.fillRect(bonus.x, bonus.y, bonus.width, bonus.height);
             });
 
             levels[currentLevel].enemies.forEach(enemy => {
                 ctx.fillStyle = enemy.color;
                 ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
             });
-
-            ctx.fillStyle = "#fff";
-            ctx.font = "20px Arial";
-            ctx.fillText("Score : " + player.score, 10, 30);
         }
 
         function resetPlayer() {
