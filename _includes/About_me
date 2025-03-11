@@ -50,8 +50,8 @@
         <h1>Portfolio | Pierre CHALLES</h1>
         <h3>Analyste programmeur</h3>
         <p>
-            Hello, moi c'est <strong>
-                <a href="Game.html" class="hidden-link" target="_blank">Pierre CHALLES</a>
+            Hello, moi c'est Pierre CHALLES<strong>
+              <!--  <a href="Game.html" class="hidden-link" target="_blank"></a> -->
             </strong> 👋<br><br>
             Je suis actuellement étudiant au Centre de Formation 3iFA d'Alencon mais délocalisé à l'Aigle 🗺️ en première année de BTS SIO 
             (Services Informatiques aux Organisations) dans l'option SLAM (Solutions Logicielles et Application Métier), 
