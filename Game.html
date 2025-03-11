@@ -3,24 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kart Racing Game</title>
+    <title>Kart Racing</title>
     <style>
-        body { margin: 0; overflow: hidden; text-align: center; }
-        canvas { background: #ccc; display: block; margin: auto; }
-        #menu { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #222;
+        }
+        canvas {
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <div id="menu">
-        <label for="circuit">Choisir un circuit :</label>
-        <select id="circuit">
-            <option value="1">Circuit 1</option>
-            <option value="2">Circuit 2</option>
-        </select>
-        <label for="kartColor">Couleur du kart :</label>
-        <input type="color" id="kartColor" value="#ff0000">
-        <button onclick="startGame()">Jouer</button>
-    </div>
     <canvas id="gameCanvas"></canvas>
     <script>
         const canvas = document.getElementById("gameCanvas");
@@ -28,65 +23,58 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let gameRunning = false;
-        let kartColor = "#ff0000";
-        let circuitChoice = 1;
-
         class Kart {
-            constructor(x, y, color, isPlayer = false) {
+            constructor(x, y) {
                 this.x = x;
                 this.y = y;
                 this.angle = 0;
                 this.speed = 0;
-                this.color = color;
-                this.isPlayer = isPlayer;
+                this.maxSpeed = 5;
+                this.acceleration = 0.2;
+                this.friction = 0.05;
             }
-
-            update() {
-                if (this.isPlayer) {
-                    if (keys.ArrowUp) this.speed = Math.min(this.speed + 0.1, 5);
-                    if (keys.ArrowDown) this.speed = Math.max(this.speed - 0.1, -2);
-                    if (keys.ArrowLeft) this.angle -= 0.05;
-                    if (keys.ArrowRight) this.angle += 0.05;
-                } else {
-                    this.speed = 2;
-                }
+            
+            move() {
+                if (keys.ArrowUp) this.speed = Math.min(this.maxSpeed, this.speed + this.acceleration);
+                if (keys.ArrowDown) this.speed = Math.max(-this.maxSpeed / 2, this.speed - this.acceleration);
+                if (!keys.ArrowUp && !keys.ArrowDown) this.speed *= (1 - this.friction);
+                if (keys.ArrowLeft) this.angle -= 0.05;
+                if (keys.ArrowRight) this.angle += 0.05;
                 
                 this.x += Math.cos(this.angle) * this.speed;
                 this.y += Math.sin(this.angle) * this.speed;
             }
-
+            
             draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.fillStyle = "red";
+                ctx.fillRect(-10, -20, 20, 40);
+                ctx.restore();
             }
         }
 
-        let player = new Kart(100, 100, kartColor, true);
-        let enemies = [new Kart(120, 120, "blue"), new Kart(140, 140, "green")];
-        let keys = {};
+        const track = new Image();
+        track.src = "https://github.com/PierreCHALLES/pierrechalles.github.io/blob/master/assets/img/track.png";  // Mettre ici l'image du circuit en base64 ou en URL
+
+        const kart = new Kart(canvas.width / 2, canvas.height / 2);
+        const keys = {};
+
+        window.addEventListener("keydown", (e) => keys[e.key] = true);
+        window.addEventListener("keyup", (e) => keys[e.key] = false);
 
         function gameLoop() {
-            if (!gameRunning) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            player.update();
-            player.draw();
-            enemies.forEach(e => { e.update(); e.draw(); });
+            ctx.drawImage(track, 0, 0, canvas.width, canvas.height);
+            kart.move();
+            kart.draw();
             requestAnimationFrame(gameLoop);
         }
 
-        function startGame() {
-            gameRunning = true;
-            kartColor = document.getElementById("kartColor").value;
-            player.color = kartColor;
-            document.getElementById("menu").style.display = "none";
+        track.onload = () => {
             gameLoop();
-        }
-
-        window.addEventListener("keydown", e => keys[e.key] = true);
-        window.addEventListener("keyup", e => keys[e.key] = false);
+        };
     </script>
 </body>
 </html>
