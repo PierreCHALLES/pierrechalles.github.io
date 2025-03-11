@@ -20,28 +20,31 @@
 </head>
 <body>
     <h1>Casse-Brique</h1>
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <canvas id="gameCanvas" width="1000" height="600"></canvas>
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
         let ballSpeed = 4;
-        let paddleWidth = 100;
+        let paddleSpeed = 7;
+        let paddleWidth = 120;
         let paddleHeight = 10;
         let paddleX = (canvas.width - paddleWidth) / 2;
         let rightPressed = false;
         let leftPressed = false;
         let score = 0;
         let level = 1;
+        let lives = 3;
         let bricks = [];
         let ball = { x: canvas.width / 2, y: canvas.height - 30, dx: 2, dy: -2, radius: 10 };
         let bonus = { x: 0, y: 0, width: 20, height: 20, active: false, type: '' };
 
         function createBricks() {
             bricks = [];
-            for (let c = 0; c < 8; c++) {
-                for (let r = 0; r < 4; r++) {
-                    bricks.push({ x: c * 100, y: r * 30 + 50, status: 1 });
+            for (let c = 0; c < 10; c++) {
+                for (let r = 0; r < 6; r++) {
+                    let type = Math.random() < 0.2 ? "unbreakable" : "normal";
+                    bricks.push({ x: c * 90, y: r * 25 + 50, status: 1, type: type });
                 }
             }
         }
@@ -50,7 +53,7 @@
         function drawBricks() {
             bricks.forEach(brick => {
                 if (brick.status === 1) {
-                    ctx.fillStyle = "#FF5733";
+                    ctx.fillStyle = brick.type === "unbreakable" ? "gray" : "#FF5733";
                     ctx.fillRect(brick.x, brick.y, 80, 20);
                 }
             });
@@ -95,11 +98,17 @@
             }
 
             if (ball.y + ball.radius > canvas.height) {
-                resetGame();
+                lives--;
+                if (lives === 0) {
+                    alert("Game Over");
+                    document.location.reload();
+                } else {
+                    resetBall();
+                }
             }
 
             bricks.forEach(brick => {
-                if (brick.status === 1 &&
+                if (brick.status === 1 && brick.type === "normal" &&
                     ball.x > brick.x && ball.x < brick.x + 80 &&
                     ball.y > brick.y && ball.y < brick.y + 20) {
                     ball.dy = -ball.dy;
@@ -115,44 +124,17 @@
             });
         }
 
-        function moveBonus() {
-            if (bonus.active) {
-                bonus.y += 3;
-                if (
-                    bonus.y + bonus.height > canvas.height - paddleHeight - 10 &&
-                    bonus.x > paddleX && bonus.x < paddleX + paddleWidth
-                ) {
-                    if (bonus.type === "paddle") {
-                        paddleWidth += 20;
-                    } else if (bonus.type === "ball") {
-                        ballSpeed += 1;
-                    }
-                    bonus.active = false;
-                }
-                if (bonus.y > canvas.height) {
-                    bonus.active = false;
-                }
-            }
-        }
-
-        function resetGame() {
+        function resetBall() {
             ball.x = canvas.width / 2;
             ball.y = canvas.height - 30;
             ball.dx = 2;
             ball.dy = -2;
             paddleX = (canvas.width - paddleWidth) / 2;
-            if (score >= 320) {
-                level++;
-                ballSpeed++;
-                createBricks();
-                score = 0;
-            }
         }
 
-        function drawScore() {
-            ctx.font = "20px Arial";
-            ctx.fillStyle = "white";
-            ctx.fillText("Score: " + score + " | Niveau: " + level, 20, 30);
+        function movePaddle() {
+            if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += paddleSpeed;
+            if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
         }
 
         function update() {
@@ -162,8 +144,21 @@
             drawPaddle();
             drawBonus();
             drawScore();
+            drawLives();
             moveBall();
-            moveBonus();
+            movePaddle();
+        }
+
+        function drawScore() {
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText("Score: " + score + " | Niveau: " + level, 20, 30);
+        }
+
+        function drawLives() {
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText("Vies: " + lives, canvas.width - 100, 30);
         }
 
         function gameLoop() {
@@ -181,13 +176,6 @@
             if (event.key === "ArrowRight") rightPressed = false;
             else if (event.key === "ArrowLeft") leftPressed = false;
         });
-
-        function movePaddle() {
-            if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += 7;
-            if (leftPressed && paddleX > 0) paddleX -= 7;
-        }
-
-        setInterval(movePaddle, 10);
     </script>
 </body>
 </html>
