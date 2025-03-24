@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veille Technologique : Cloud Gaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* Global Styles */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -20,7 +20,6 @@
             color: #00d8ff;
         }
 
-        /* Header */
         header {
             background: linear-gradient(135deg, #3b3b58, #1e1e2e);
             color: #00d8ff;
@@ -35,12 +34,6 @@
             letter-spacing: 2px;
         }
 
-        header p {
-            font-style: italic;
-            font-size: 1.2em;
-        }
-
-        /* Container */
         .container {
             max-width: 1100px;
             margin: 40px auto;
@@ -50,7 +43,6 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Sections */
         .section {
             margin: 30px 0;
             padding: 20px;
@@ -65,21 +57,30 @@
             margin-bottom: 10px;
         }
 
-        .section p,
-        .section ul {
-            font-size: 1.1em;
+        .sources-container {
+            margin-top: 50px;
+            padding: 20px;
+            background: #2a2a3c;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .section ul {
-            list-style-type: disc;
-            margin-left: 20px;
+        .sources-container h2 {
+            color: #00d8ff;
+            font-size: 1.5em;
+            text-align: center;
         }
 
-        .section ul li {
+        .sources-container ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .sources-container ul li {
             margin: 10px 0;
         }
 
-        /* Button */
         .btn-container {
             text-align: center;
             margin-top: 40px;
@@ -99,18 +100,12 @@
             background: #00b3cc;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 10px 0;
             background: #1e1e2e;
             color: #fff;
             margin-top: 20px;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 0.9em;
         }
     </style>
 </head>
@@ -123,48 +118,57 @@
     <div class="container">
         <div class="section">
             <h2>1. Qu’est-ce que le Cloud Gaming ?</h2>
-            <p>
-                Le cloud gaming permet de jouer à des jeux vidéo en streaming, où les jeux sont exécutés sur des serveurs distants et retransmis en temps réel sur un écran (PC, smartphone, tablette, TV). Cette technologie supprime le besoin d'une console ou d'un PC gaming haut de gamme.
-            </p>
-            <p>Exemples de services : </p>
-            <ul>
-                <li><strong>GeForce Now</strong> (NVIDIA)</li>
-                <li><strong>Xbox Cloud Gaming</strong> (Microsoft)</li>
-                <li><strong>PlayStation Now</strong> (Sony)</li>
-            </ul>
+            <p>Le cloud gaming permet de jouer à des jeux vidéo en streaming, où les jeux sont exécutés sur des serveurs distants et retransmis en temps réel sur un écran (PC, smartphone, tablette, TV). Cette technologie supprime le besoin d'une console ou d'un PC gaming haut de gamme.</p>
         </div>
 
         <div class="section">
             <h2>2. Avantages</h2>
             <ul>
-                <li><strong>Accessibilité :</strong> Pas besoin d’un matériel coûteux. Un simple appareil connecté suffit.</li>
-                <li><strong>Flexibilité :</strong> Les jeux peuvent être joués sur plusieurs appareils.</li>
-                <li><strong>Mises à jour invisibles :</strong> Les serveurs s’occupent des mises à jour et des configurations.</li>
-                <li><strong>Réduction des déchets électroniques :</strong> Moins de consoles fabriquées et jetées.</li>
+                <li><strong>Accessibilité :</strong> Pas besoin d’un matériel coûteux.</li>
+                <li><strong>Flexibilité :</strong> Jouez sur plusieurs appareils.</li>
+                <li><strong>Mises à jour automatiques :</strong> Gérées par les serveurs.</li>
+                <li><strong>Réduction des déchets électroniques :</strong> Moins de consoles produites.</li>
             </ul>
         </div>
 
         <div class="section">
             <h2>3. Limites</h2>
             <ul>
-                <li><strong>Dépendance à la connexion Internet :</strong> Une connexion rapide et stable est nécessaire.</li>
-                <li><strong>Latence :</strong> Les temps de réponse peuvent être plus longs, affectant les jeux compétitifs.</li>
-                <li><strong>Coûts récurrents :</strong> Les abonnements aux services cloud s’ajoutent au prix des jeux.</li>
-                <li><strong>Propriété des jeux :</strong> Les joueurs ne possèdent pas physiquement leurs jeux.</li>
+                <li><strong>Dépendance à Internet :</strong> Connexion stable requise.</li>
+                <li><strong>Latence :</strong> Peut impacter les jeux compétitifs.</li>
+                <li><strong>Coût :</strong> Abonnements mensuels.</li>
+                <li><strong>Propriété :</strong> Les jeux ne sont pas réellement possédés.</li>
             </ul>
         </div>
 
         <div class="section">
             <h2>4. Applications et Futur</h2>
             <ul>
-                <li><strong>Jeux AAA accessibles partout :</strong> Jouez sur n’importe quel appareil connecté.</li>
-                <li><strong>Expériences multi-plateformes :</strong> Passez d’une console à un smartphone sans perdre votre progression.</li>
-                <li><strong>Évolution vers le métavers :</strong> Soutenir des mondes virtuels massifs interactifs.</li>
-                <li><strong>Impact sur le matériel de gaming :</strong> Les consoles physiques pourraient devenir obsolètes.</li>
+                <li><strong>Jeux AAA accessibles :</strong> Jouez n'importe où.</li>
+                <li><strong>Évolution vers le métavers :</strong> Intégration avec des mondes virtuels.</li>
+                <li><strong>Impact sur le hardware :</strong> Moins de consoles physiques.</li>
+            </ul>
+        </div>
+        <div class="section">
+                <h2>5. Conclusion</h2>
+                <p>
+                    Le cloud gaming représente une avancée majeure dans l'industrie du jeu vidéo en offrant une alternative aux consoles traditionnelles et aux PC gaming. 
+                    Bien qu'il présente des défis tels que la latence et la dépendance à une connexion Internet stable, ses avantages en termes d'accessibilité et d'innovation en font une technologie prometteuse. 
+                    À l’avenir, avec l’amélioration des infrastructures réseau et l’essor de la 5G, le cloud gaming pourrait bien devenir la norme pour les joueurs du monde entier.
+                </p>
+            </div>
+
+        <div class="sources-container">
+            <h2>Sources</h2>
+            <ul>
+                <li><a href="https://www.nvidia.com/fr-fr/geforce-now/" target="_blank">NVIDIA GeForce Now</a></li>
+                <li><a href="https://www.microsoft.com/en-us/xbox/cloud-gaming" target="_blank">Microsoft Xbox Cloud Gaming</a></li>
+                <li><a href="https://www.playstation.com/fr-fr/ps-now/" target="_blank">Sony PlayStation Now</a></li>
+                <li><a href="https://www.theverge.com/" target="_blank">The Verge</a></li>
             </ul>
         </div>
 
-         <div class="btn-container">
+        <div class="btn-container">
             <a href="index.html" class="btn">Retour à l'accueil</a>
         </div>
     </div>
